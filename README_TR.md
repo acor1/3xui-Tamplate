@@ -1,41 +1,241 @@
 <div align="center">
 
-# ⚡ 3X-UI Custom Subscription Template
+# ⚡ 3X-UI Abonelik Şablonu
 
-**3X-UI panelleri için ultra hafif, yüksek performanslı ve duyarlı özel abonelik şablonu**
+**3X-UI paneli için özel, ultra hafif, yüksek hızlı ve tamamen duyarlı abonelik sayfası şablonu**
 
-[نسخه فارسی](README.md) | [English Version](README_EN.md) | [中文版](README_CN.md) | [Русская версия](README_RU.md) • [Önizleme](#-görsel-önizleme) • [Özellikler](#-öne-çıkan-özellikler) • [Hızlı Kurulum](#-hızlı-kurulum) • [Kurulum Yolu](#-kurulum-yolu) • [Manuel Kurulum](#-manuel-kurulum) • [Lisans](#-lisans)
+[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-3X--UI-blue?style=for-the-badge)](https://github.com/MHSanaei/3x-ui)
+[![Languages](https://img.shields.io/badge/languages-5-orange?style=for-the-badge)](#-çok-dilli)
+[![Responsive](https://img.shields.io/badge/responsive-yes-purple?style=for-the-badge)](#-özellikler)
+
+[فارسی](README.md) • [English](README_EN.md) • [中文](README_CN.md) • [Русский](README_RU.md)
+
+[📷 Önizleme](#-önizleme) • [✨ Özellikler](#-özellikler) • [🚀 Hızlı Kurulum](#-hızlı-kurulum) • [📂 Kurulum Yolu](#-kurulum-yolu) • [🛠 Manuel Kurulum](#-manuel-kurulum) • [📄 Lisans](#-lisans)
 
 </div>
 
 ---
 
-## 📷 Görsel Önizleme
+## 📷 Önizleme
 
 <div align="center">
-  <img src="IMG_3366.jpeg" alt="3X-UI Template Preview 1" width="48%" />
-  <img src="IMG_3365.png" alt="3X-UI Template Preview 2" width="48%" />
-  <br/><br/>
-  <img src="IMG_3368.jpeg" alt="3X-UI Template Preview 3" width="70%" />
+
+| Açık Tema | Koyu Tema |
+|:---:|:---:|
+| ![Light Mode](IMG_3365.png) | ![Dark Mode](IMG_3366.jpeg) |
+
+| Mobil Görünüm |
+|:---:|
+| ![Mobile](IMG_3368.jpeg) |
+
 </div>
 
 ---
 
-## ✨ Öne Çıkan Özellikler
+## ✨ Özellikler
 
-- 🎨 **Çift Tema Desteği:** Kullanıcı tarayıcısında durum tercihi kaydedilen sorunsuz Koyu (Dark) ve Açık (Light) mod geçişi.
-- 🌐 **Çoklu Dil Desteği (5 Dil):** Otomatik RTL/LTR düzen geçişi ile Farsça (🇮🇷), İngilizce (🇬🇧), Çince (🇨🇳), Rusça (🇷🇺) ve Türkçe (🇹🇷) için tam destek.
-- 📊 **Dinamik 3 Renkli Gösterge:** Veri tüketim eşiklerine göre zümrüt yeşili, sıcak turuncu ve neon kırmızı renkler sunan etkileşimli ilerleme halkası.
-- ⏳ **Anlık Geri Sayım Sayacı:** Kalan abonelik gün, saat ve dakikalarını hassas bir şekilde takip eden canlı geri sayım.
-- 📱 **PWA Desteği:** iOS ve Android cihazlarda paneli ana ekrana ekleme ("Ana Ekrana Ekle") desteği.
-- ⚡ **Protokol Filtreleme ve Arama:** VLESS, VMESS, Trojan ve Shadowsocks düğümleri için anlık arama kutusu ve hızlı filtreleme etiketleri.
-- 🔐 **Temiz ve Tek Dosyalı Mimari:** Herhangi bir izleme komut dosyası veya gereksiz kod içermeyen temiz, tek dosyalı dağıtım.
+### 🎨 Açık ve Koyu Tema
+Kullanıcının tarayıcısında kaydedilen tercihle akıllı geçiş — bir sonraki ziyarette son tema otomatik olarak aktif olur.
+
+---
+
+### 🌐 Çok Dilli (5 Dil)
+Tam destek:
+
+| Dil | Bölge | Yön |
+|:---|:---:|:---:|
+| 🇮🇷 Farsça | İran | RTL |
+| 🇬🇧 İngilizce | Global | LTR |
+| 🇨🇳 Çince | Çin | LTR |
+| 🇷🇺 Rusça | Rusya | LTR |
+| 🇹🇷 Türkçe | Türkiye | LTR |
+
+Sayfa yönü (RTL/LTR) otomatik olarak ayarlanır.
+
+---
+
+### 📊 Dinamik 3 Renkli Dairesel Gösterge
+Etkileşimli kullanım göstergesi ve renk belirteçleri:
+
+- 🟢 **Zümrüt Yeşili** — Düşük kullanım
+- 🟠 **Sıcak Turuncu** — Orta kullanım
+- 🔴 **Neon Kırmızı** — Yüksek kullanım
+
+---
+
+### ⏳ Gerçek Zamanlı Geri Sayım
+Aboneliğin kalan süresini gösteren hassas geri sayım:
+
+- Kalan gün
+- Kalan saat
+- Kalan dakika
+
+---
+
+### 📱 PWA Desteği (Uygulama Olarak Yükle)
+"Ana Ekrana Ekle" desteği:
+- iOS (Safari)
+- Android (Chrome, Firefox)
+
+Yüklendikten sonra yerel bir uygulama gibi çalışır — simge, açılış ekranı ve tam ekran modu.
+
+---
+
+### ⚡ Konfigürasyon Arama ve Filtreleme
+- 🔍 **Anlık arama kutusu** — yaz, sonuçları anında gör
+- 🏷 **Hızlı filtre etiketleri** ile protokoller:
+  - VLESS
+  - VMESS
+  - Trojan
+  - Shadowsocks
+
+---
+
+### 🚀 Ultra Hafif
+- Ağır framework yok
+- Saf CSS ve JS
+- 100 ms'nin altında yükleme
+- Düşük donanımlı sunucular için optimize
 
 ---
 
 ## 🚀 Hızlı Kurulum
 
-Şablonu **3X-UI** panelinize otomatik olarak kurmak ve dağıtmak için sunucu terminalinizde aşağıdaki tek satırlık komutu çalıştırmanız yeterlidir:
+Şablonu **3X-UI** paneline otomatik olarak kurmak ve dağıtmak için sunucu terminalinde şu tek satırlık komutu çalıştır:
 
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/install.sh)
+```
+
+---
+
+## 📂 Kurulum Yolu
+
+Betik otomatik olarak şu adımları gerçekleştirir:
+
+| Adım | Açıklama |
+|:---|:---|
+| 1 | Mevcut şablonu yedekler |
+| 2 | Yeni şablonu indirir |
+| 3 | Paneldeki `sub.html` dosyasını değiştirir |
+| 4 | 3X-UI servisini yeniden başlatır |
+
+### Varsayılan Yol
+
+```
+/usr/local/x-ui/bin/sub.html
+```
+
+Panelin başka bir yolda kuruluysa betik otomatik olarak algılar.
+
+---
+
+## 🛠 Manuel Kurulum
+
+Manuel kurulum tercih edersen:
+
+### 1. Dosyayı indir
+
+```bash
+wget https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
+```
+
+### 2. Mevcut dosyayı yedekle
+
+```bash
+cp /usr/local/x-ui/bin/sub.html /usr/local/x-ui/bin/sub.html.bak
+```
+
+### 3. Değiştir
+
+```bash
+cp sub.html /usr/local/x-ui/bin/sub.html
+```
+
+### 4. Yeniden başlat
+
+```bash
+systemctl restart x-ui
+```
+
+---
+
+## 💻 Tarayıcı Uyumluluğu
+
+| Tarayıcı | Sürüm | Durum |
+|:---|:---|:---:|
+| Chrome | 90+ | ✅ |
+| Firefox | 88+ | ✅ |
+| Safari | 14+ | ✅ |
+| Edge | 90+ | ✅ |
+| Opera | 76+ | ✅ |
+| Samsung Internet | 14+ | ✅ |
+
+### İşletim Sistemi Uyumluluğu
+
+| İşletim Sistemi | PWA Desteği |
+|:---|:---:|
+| iOS 14+ | ✅ |
+| Android 5+ | ✅ |
+| Windows 10+ | ✅ |
+| macOS 11+ | ✅ |
+| Linux | ✅ |
+
+---
+
+## 🔧 Sorun Giderme
+
+### ❌ Şablon görünmüyor
+
+```bash
+# Dosyanın kopyalandığını kontrol et
+ls -la /usr/local/x-ui/bin/sub.html
+
+# Servisi yeniden başlat
+systemctl restart x-ui
+
+# Günlükleri kontrol et
+journalctl -u x-ui -n 50
+```
+
+### ❌ PWA çalışmıyor
+
+PWA için **HTTPS** gerekir. Panelin HTTP üzerinden sunuluyorsa PWA devre dışı kalır.
+
+### ❌ Dil değişmiyor
+
+Tarayıcı önbelleğini temizle:
+
+```
+Ctrl + Shift + Delete
+```
+
+### ❌ Tema yenilemeden sonra sıfırlanıyor
+
+Tarayıcının LocalStorage kullanmasına izin ver. Gizli Sekme modunda tema kaydedilmez.
+
+---
+
+## 📄 Lisans
+
+Bu proje **MIT** Lisansı altında yayınlanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+
+---
+
+<div align="center">
+
+## 👨‍💻 Geliştirici
+
+**acor1**
+
+[![GitHub](https://img.shields.io/badge/GitHub-acor1-black?style=for-the-badge&logo=github)](https://github.com/acor1)
+[![Repository](https://img.shields.io/badge/Repo-3xui__Tamplate-blue?style=for-the-badge&logo=git)](https://github.com/acor1/3xui-Tamplate)
+
+---
+
+**⭐ Bu proje işine yaradıysa yıldız ver! ⭐**
+
+Made with ❤️ by acor1
+
+</div>
