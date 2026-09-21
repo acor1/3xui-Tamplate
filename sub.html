@@ -1,0 +1,1326 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>{{ .subTitle }}</title>
+    
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Subscription Panel" />
+    <meta name="theme-color" content="#040507" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Vazirmatn:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+      :root {
+        color-scheme: dark;
+        --font-main: "Vazirmatn", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        
+        --gold-primary: #f59e0b;
+        --gold-light: #fbbf24;
+        --gold-dark: #d97706;
+        --gold-glow: rgba(245, 158, 11, 0.45);
+        --gold-border: rgba(245, 158, 11, 0.35);
+
+        --bg-base: #040507;
+        --surface: rgba(18, 20, 29, 0.68);
+        --border: rgba(255, 255, 255, 0.08);
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --card-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+
+        --gauge-color: var(--success);
+        --gauge-glow: rgba(16, 185, 129, 0.45);
+
+        --radius-lg: clamp(1.2rem, 4vw, 1.6rem);
+        --radius-md: clamp(0.9rem, 3vw, 1.2rem);
+        --radius-sm: 0.75rem;
+      }
+
+      html[data-theme="light"] {
+        color-scheme: light;
+        --bg-base: #f1f5f9;
+        --surface: rgba(255, 255, 255, 0.85);
+        --border: rgba(0, 0, 0, 0.08);
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        --gold-border: rgba(217, 119, 6, 0.35);
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+      ::-webkit-scrollbar { width: 5px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--gold-border); border-radius: 10px; }
+
+      body {
+        font-family: var(--font-main);
+        background: var(--bg-base);
+        color: var(--text-primary);
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        justify-content: center;
+        overflow-x: hidden;
+        position: relative;
+        padding-bottom: env(safe-area-inset-bottom);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .bg-aurora {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      #particlesCanvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .aurora-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.28;
+        animation: floatOrb 8s ease-in-out infinite alternate;
+      }
+
+      .blob-1 { top: -10%; left: -10%; width: min(380px, 80vw); height: min(380px, 80vw); background: radial-gradient(circle, var(--gold-light), var(--gold-dark)); }
+      .blob-2 { bottom: -10%; right: -10%; width: min(420px, 85vw); height: min(420px, 85vw); background: radial-gradient(circle, #b45309, #78350f); animation-delay: -4s; }
+
+      @keyframes floatOrb {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(30px, 20px) scale(1.12); }
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 480px;
+        min-height: 100vh;
+        min-height: 100dvh;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(0.8rem, 3vw, 1.25rem);
+      }
+
+      .header {
+        position: relative;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: clamp(0.8rem, 2.5vw, 1rem) clamp(1rem, 3vw, 1.25rem);
+        background: var(--surface);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--gold-border);
+        border-radius: var(--radius-lg);
+        margin-bottom: clamp(1rem, 3vw, 1.25rem);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .header-info { display: flex; flex-direction: column; }
+      .header-title { font-size: clamp(1rem, 4vw, 1.15rem); font-weight: 900; background: linear-gradient(135deg, var(--text-primary) 30%, var(--gold-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      .header-email { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem; word-break: break-all; }
+
+      .header-actions { display: flex; align-items: center; gap: 0.4rem; }
+
+      .icon-action-btn {
+        width: 2.2rem; height: 2.2rem;
+        border-radius: 50%;
+        border: 1px solid var(--gold-border);
+        background: rgba(245, 158, 11, 0.1);
+        color: var(--gold-light);
+        display: grid; place-items: center;
+        cursor: pointer; transition: 0.2s;
+        flex-shrink: 0;
+      }
+      .icon-action-btn:active { transform: scale(0.92); }
+      .icon-action-btn.spin i { animation: spin 0.8s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .lang-dropdown-wrapper { position: relative; z-index: 101; }
+      
+      .lang-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 2rem;
+        border: 1px solid var(--gold-border);
+        background: rgba(245, 158, 11, 0.12);
+        color: var(--gold-light);
+        font-family: var(--font-main);
+        font-size: 0.78rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .lang-btn:active { transform: scale(0.95); }
+
+      .lang-menu {
+        position: absolute;
+        top: calc(100% + 0.6rem);
+        left: 0;
+        background: var(--bg-base);
+        border: 1px solid var(--gold-light);
+        border-radius: var(--radius-md);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        padding: 0.4rem;
+        display: none;
+        flex-direction: column;
+        gap: 0.25rem;
+        z-index: 999;
+        min-width: 145px;
+      }
+      html[dir="ltr"] .lang-menu { left: auto; right: 0; }
+      .lang-menu.show { display: flex; animation: menuScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+
+      @keyframes menuScaleIn {
+        from { opacity: 0; transform: scale(0.9) translateY(-10px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+      }
+
+      .lang-item {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.5rem 0.85rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .lang-item:hover { background: rgba(245, 158, 11, 0.2); color: var(--gold-light); }
+      .lang-item.active { background: var(--gold-primary); color: #000; font-weight: 900; }
+
+      .card {
+        position: relative;
+        z-index: 1;
+        background: var(--surface);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: clamp(1rem, 3vw, 1.25rem);
+        margin-bottom: clamp(1rem, 3vw, 1.25rem);
+        box-shadow: var(--card-shadow);
+        animation: cardWaveFloat 5s ease-in-out infinite alternate;
+        transition: border-color 0.4s, box-shadow 0.4s, transform 0.2s ease-out;
+        transform-style: preserve-3d;
+        overflow: hidden;
+      }
+
+      .card:nth-child(even) { animation-delay: -2.5s; }
+
+      @keyframes cardWaveFloat {
+        0% { transform: translateY(0px); border-color: var(--border); }
+        50% { border-color: rgba(245, 158, 11, 0.2); }
+        100% { transform: translateY(-6px); border-color: var(--border); }
+      }
+
+      .card:hover {
+        border-color: var(--gold-light) !important;
+        box-shadow: 0 15px 35px var(--gold-glow);
+      }
+
+      .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(251, 191, 36, 0.6) 0%, transparent 70%);
+        transform: scale(0);
+        animation: rippleAnim 0.6s linear;
+        pointer-events: none;
+      }
+
+      @keyframes rippleAnim {
+        to { transform: scale(4); opacity: 0; }
+      }
+
+      .card-laser-glow::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(transparent, transparent, var(--gold-light), transparent);
+        animation: laserRotate 6s linear infinite;
+        z-index: -1;
+        opacity: 0.35;
+      }
+
+      @keyframes laserRotate {
+        100% { transform: rotate(360deg); }
+      }
+
+      .announce-card {
+        border-right: 4px solid var(--gold-primary);
+        background: rgba(245, 158, 11, 0.08);
+        display: none;
+        gap: 0.8rem;
+        align-items: flex-start;
+      }
+      html[dir="ltr"] .announce-card { border-right: 1px solid var(--border); border-left: 4px solid var(--gold-primary); }
+
+      .usage-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+      
+      .ring-container {
+        position: relative;
+        width: 125px;
+        height: 125px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .progress-ring__circle {
+        transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.6s ease;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+        stroke-linecap: round;
+        stroke: var(--gauge-color);
+        animation: gaugeGlowRotate 2.5s ease-in-out infinite alternate;
+      }
+
+      @keyframes gaugeGlowRotate {
+        0% { filter: drop-shadow(0 0 3px var(--gauge-color)); }
+        50% { filter: drop-shadow(0 0 16px var(--gauge-color)); }
+        100% { filter: drop-shadow(0 0 6px var(--gauge-color)); }
+      }
+
+      .ring-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      .ring-percent {
+        font-size: 1.7rem; font-weight: 900; color: var(--text-primary);
+        text-shadow: 0 0 12px var(--gauge-glow); direction: ltr;
+        animation: percentPulse 2s ease-in-out infinite alternate;
+        transition: text-shadow 0.6s ease;
+      }
+
+      @keyframes percentPulse {
+        0% { opacity: 0.85; transform: scale(0.98); }
+        100% { opacity: 1; transform: scale(1.03); }
+      }
+
+      .ring-label { font-size: 0.68rem; color: var(--text-secondary); font-weight: 600; }
+
+      .status-badge {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        padding: 0.35rem 0.85rem; border-radius: 2rem;
+        font-size: 0.75rem; font-weight: 800; margin-top: 0.5rem;
+        background: rgba(16, 185, 129, 0.15); color: var(--success);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        animation: liveStatusActive 1.8s infinite ease-in-out;
+      }
+
+      @keyframes liveStatusActive {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); transform: scale(1); }
+        50% { box-shadow: 0 0 0 9px rgba(16, 185, 129, 0); transform: scale(1.04); }
+      }
+
+      .status-badge.inactive {
+        background: rgba(239, 68, 68, 0.15); color: var(--danger);
+        border-color: rgba(239, 68, 68, 0.3);
+        animation: liveStatusInactive 1.8s infinite ease-in-out;
+      }
+
+      @keyframes liveStatusInactive {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); transform: scale(1); }
+        50% { box-shadow: 0 0 0 9px rgba(239, 68, 68, 0); transform: scale(1.04); }
+      }
+
+      .stats-list { display: flex; flex-direction: column; gap: 0.55rem; flex: 1; min-width: 170px; }
+      .stat-row { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+      .stat-row:last-child { border-bottom: none; padding-bottom: 0; }
+      .stat-label { font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.35rem; }
+      .stat-val-group { font-size: 0.88rem; font-weight: 800; display: flex; align-items: center; gap: 0.25rem; unicode-bidi: isolate; }
+      .stat-unit { font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; }
+
+      .expiry-card { display: flex; flex-direction: column; gap: 0.85rem; }
+      .expiry-header { display: flex; justify-content: space-between; align-items: center; }
+      .expiry-title { font-size: 0.8rem; font-weight: 800; color: var(--text-secondary); display: flex; align-items: center; gap: 0.45rem; }
+      .expiry-date-tag { font-size: 0.72rem; font-weight: 800; color: var(--gold-light); background: rgba(245, 158, 11, 0.12); border: 1px solid var(--gold-border); padding: 0.25rem 0.65rem; border-radius: 2rem; }
+
+      .expiry-timer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+      .timer-box {
+        background: rgba(0, 0, 0, 0.03);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 0.75rem 0.2rem;
+        text-align: center;
+        display: flex; flex-direction: column; align-items: center;
+        transition: transform 0.2s, border-color 0.2s;
+      }
+      .timer-box:hover { border-color: var(--gold-border); transform: translateY(-3px); }
+      .timer-value { font-size: 1.4rem; font-weight: 900; color: var(--gold-light); line-height: 1.1; }
+      .timer-label { font-size: 0.65rem; color: var(--text-secondary); margin-top: 0.25rem; font-weight: 600; }
+
+      .main-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
+      
+      .btn-gold {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+        color: #000;
+        font-family: var(--font-main);
+        font-weight: 900;
+        font-size: 0.85rem;
+        padding: 0.85rem;
+        border: none;
+        border-radius: var(--radius-md);
+        display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        cursor: pointer;
+        box-shadow: 0 4px 20px var(--gold-glow);
+        transition: 0.2s;
+      }
+      .btn-gold:active { transform: scale(0.97); }
+      
+      .btn-gold.copied {
+        background: #10b981 !important;
+        color: #fff !important;
+        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4) !important;
+      }
+
+      .btn-glass {
+        background: var(--surface);
+        color: var(--text-primary);
+        font-family: var(--font-main);
+        font-weight: 800;
+        font-size: 0.85rem;
+        padding: 0.85rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-glass:active { transform: scale(0.97); }
+
+      .proto-filter-wrapper {
+        display: flex;
+        gap: 0.4rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        scrollbar-width: none;
+      }
+      .proto-filter-wrapper::-webkit-scrollbar { display: none; }
+      
+      .proto-chip {
+        padding: 0.35rem 0.75rem;
+        border-radius: 1.5rem;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: var(--text-secondary);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: 0.2s;
+      }
+      .proto-chip:hover { border-color: var(--gold-border); color: var(--gold-light); }
+      .proto-chip.active {
+        background: var(--gold-primary);
+        color: #000;
+        border-color: var(--gold-primary);
+        font-weight: 900;
+      }
+
+      .config-section-header { display: flex; justify-content: space-between; align- items: center; margin-bottom: 0.85rem; }
+      .section-title { font-size: 1rem; font-weight: 900; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem; }
+
+      .search-box { position: relative; margin-bottom: 0.85rem; }
+      .search-input {
+        width: 100%;
+        padding: 0.65rem 2.2rem 0.65rem 0.9rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-primary);
+        font-family: var(--font-main);
+        font-size: 0.8rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      html[dir="ltr"] .search-input { padding: 0.65rem 0.9rem 0.65rem 2.2rem; }
+      .search-input:focus { border-color: var(--gold-primary); }
+      .search-icon { position: absolute; top: 50%; right: 0.8rem; transform: translateY(-50%); color: var(--text-secondary); font-size: 0.8rem; }
+      html[dir="ltr"] .search-icon { right: auto; left: 0.8rem; }
+
+      .list-item {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 0.85rem;
+        margin-bottom: 0.65rem;
+        display: flex; align-items: center; justify-content: space-between;
+        transition: 0.2s;
+      }
+      .list-item:hover { border-color: var(--gold-border); transform: translateX(-3px); }
+      html[dir="ltr"] .list-item:hover { transform: translateX(3px); }
+      .list-item-title { font-size: 0.82rem; font-weight: 700; direction: ltr; text-align: left; word-break: break-all; margin-inline-end: 0.75rem; }
+      .list-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+      .mini-btn {
+        width: 2.1rem; height: 2.1rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.04);
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .mini-btn:hover { background: var(--gold-primary); color: #000; border-color: var(--gold-primary); }
+
+      .modal {
+        position: fixed; inset: 0; z-index: 200; display: none;
+        align-items: center; justify-content: center; background: rgba(0,0,0,0.75);
+        backdrop-filter: blur(10px); padding: 1rem;
+      }
+      .modal.show { display: flex; }
+      .modal-content { background: var(--bg-base); border: 1px solid var(--gold-border); border-radius: var(--radius-lg); padding: 1.5rem; width: 100%; max-width: 320px; text-align: center; }
+      .qr-wrapper { background: #fff; padding: 0.85rem; border-radius: var(--radius-sm); margin: 1rem 0; display: flex; justify-content: center; }
+      .qr-link-box { background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.5rem; font-size: 0.7rem; color: var(--text-secondary); word-break: break-all; max-height: 70px; overflow-y: auto; text-align: left; }
+
+      .pwa-banner {
+        position: fixed;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(120%);
+        width: calc(100% - 2rem);
+        max-width: 440px;
+        background: var(--surface);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--gold-border);
+        border-radius: var(--radius-lg);
+        padding: 1rem;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .pwa-banner.show { transform: translateX(-50%) translateY(0); }
+      .pwa-info { display: flex; align-items: center; gap: 0.75rem; }
+      .pwa-icon { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: #000; display: grid; place-items: center; font-size: 1.2rem; flex-shrink: 0; }
+      .pwa-title { font-size: 0.85rem; font-weight: 800; color: var(--text-primary); }
+      .pwa-desc { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.1rem; }
+      .pwa-actions { display: flex; align-items: center; gap: 0.4rem; }
+
+      .toast {
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+        opacity: 0; padding: 0.65rem 1.25rem; border-radius: 2rem; color: #000; font-weight: 900;
+        background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
+        box-shadow: 0 4px 20px var(--gold-glow); font-size: 0.82rem; transition: 0.3s; z-index: 300; pointer-events: none;
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+  </head>
+  <body>
+
+    <div class="bg-aurora">
+      <canvas id="particlesCanvas"></canvas>
+      <div class="aurora-blob blob-1"></div>
+      <div class="aurora-blob blob-2"></div>
+    </div>
+
+    <div class="app-container">
+      
+      <header class="header">
+        <div class="header-info">
+          <span class="header-title" id="panelTitle">✨ اشتراک شما</span>
+          <span class="header-email" id="userEmailText"></span>
+        </div>
+
+        <div class="header-actions">
+          <button id="themeToggleBtn" class="icon-action-btn" aria-label="Toggle Theme" title="Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+
+          <button id="reloadBtn" class="icon-action-btn" aria-label="Reload" title="Reload">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+
+          <div class="lang-dropdown-wrapper">
+            <button id="langSelectBtn" class="lang-btn" aria-label="Language Selector">
+              <span id="currentLangFlag">🇮🇷</span>
+              <span id="currentLangLabel">فارسی</span>
+              <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem; opacity: 0.7;"></i>
+            </button>
+            
+            <div id="langMenu" class="lang-menu" role="menu">
+              <div class="lang-item" data-lang="fa" role="menuitem">🇮🇷 فارسی</div>
+              <div class="lang-item" data-lang="en" role="menuitem">🇬🇧 English</div>
+              <div class="lang-item" data-lang="zh" role="menuitem">🇨🇳 简体中文</div>
+              <div class="lang-item" data-lang="ru" role="menuitem">🇷🇺 Русский</div>
+              <div class="lang-item" data-lang="tr" role="menuitem">🇹🇷 Türkçe</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div id="announceCard" class="card announce-card">
+        <span style="font-size: 1.2rem;">📢</span>
+        <div id="announceText" style="font-size: 0.8rem; line-height: 1.6;"></div>
+      </div>
+
+      <div class="card usage-wrapper card-laser-glow">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="ring-container">
+            <svg viewBox="0 0 100 100" width="120" height="120">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"></circle>
+              <circle id="usageRing" class="progress-ring__circle" cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+            </svg>
+            <div class="ring-text">
+              <span class="ring-percent" id="ringPercentText">0%</span>
+              <span class="ring-label" id="ringUsageLabel">مصرف شده</span>
+            </div>
+          </div>
+          <div id="statusChip" class="status-badge">
+            <i id="statusIcon" class="fa-solid fa-circle-check"></i>
+            <span id="statusText">فعال</span>
+          </div>
+        </div>
+
+        <div class="stats-list">
+          <div class="stat-row">
+            <span class="stat-label">💾 <span id="totalStatLabel">حجم کل</span></span>
+            <div class="stat-val-group"><span id="totalStatValue">0</span><span class="stat-unit" id="totalUnit">GB</span></div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">📥 <span id="downloadLabel">دانلود شده</span></span>
+            <div class="stat-val-group"><span id="downloadVal">0</span><span class="stat-unit" id="downloadUnit">GB</span></div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">📤 <span id="uploadLabel">آپلود شده</span></span>
+            <div class="stat-val-group"><span id="uploadVal">0</span><span class="stat-unit" id="uploadUnit">GB</span></div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">📊 <span id="usedStatLabel">مصرف شده</span></span>
+            <div class="stat-val-group"><span id="usedStatValue">0</span><span class="stat-unit" id="usedUnit">GB</span></div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">🔋 <span id="remainedStatLabel">باقی مانده</span></span>
+            <div class="stat-val-group"><span id="remainedStatValue">0</span><span class="stat-unit" id="remainedUnit">GB</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card expiry-card">
+        <div class="expiry-header">
+          <span class="expiry-title">
+            ⏳ <span id="expiryTextLabel">زمان باقی‌مانده</span>
+          </span>
+          <span id="expiryDatePreview" class="expiry-date-tag">—</span>
+        </div>
+
+        <div class="expiry-timer-grid">
+          <div class="timer-box">
+            <span id="daysLeft" class="timer-value">0</span>
+            <span id="daysLabel" class="timer-label">روز</span>
+          </div>
+          <div class="timer-box">
+            <span id="hoursLeft" class="timer-value">0</span>
+            <span id="hoursLabel" class="timer-label">ساعت</span>
+          </div>
+          <div class="timer-box">
+            <span id="minutesLeft" class="timer-value">0</span>
+            <span id="minutesLabel" class="timer-label">دقیقه</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-actions">
+        <button id="copyMainBtn" class="btn-gold">
+          📋 <span id="copyMainText">کپی لینک اشتراک</span>
+        </button>
+        <button id="qrMainBtn" class="btn-glass">
+          📷 <span id="qrText">QR کد اشتراک</span>
+        </button>
+      </div>
+
+      <div class="config-section-header">
+        <h3 class="section-title">⚡ <span id="configsTitle">کانفیگ‌ها</span></h3>
+        <button id="copyAllConfigsBtn" class="btn-glass" style="padding: 0.45rem 0.85rem; font-size: 0.75rem;">
+          📦 <span id="copyAllText">کپی همه</span>
+        </button>
+      </div>
+
+      <div class="proto-filter-wrapper" id="protoFilters">
+        <button class="proto-chip active" data-proto="all">ALL</button>
+        <button class="proto-chip" data-proto="vless">VLESS</button>
+        <button class="proto-chip" data-proto="vmess">VMESS</button>
+        <button class="proto-chip" data-proto="trojan">TROJAN</button>
+        <button class="proto-chip" data-proto="ss">SHADOWSOCKS</button>
+      </div>
+
+      <div class="search-box" id="configSearchBox" style="display: none;">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="configSearchInput" class="search-input" placeholder="جستجوی کانفیگ..." autocomplete="off" />
+      </div>
+
+      <div id="configListContainer"></div>
+
+    </div>
+
+    <div id="pwaInstallBanner" class="pwa-banner">
+      <div class="pwa-info">
+        <div class="pwa-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div>
+          <div class="pwa-title" id="pwaTitle">نصب اپلیکیشن</div>
+          <div class="pwa-desc" id="pwaDesc">دسترسی سریع‌تر بدون نیاز به مرورگر</div>
+        </div>
+      </div>
+      <div class="pwa-actions">
+        <button id="pwaInstallBtn" class="btn-gold" style="padding: 0.4rem 0.85rem; font-size: 0.75rem;"><span id="pwaBtnText">نصب</span></button>
+        <button id="pwaCloseBtn" class="mini-btn" style="border:none;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <div id="qrModal" class="modal">
+      <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong id="modalQrTitle" style="font-size: 1rem; color: var(--text-primary);">QR کد</strong>
+          <button id="closeModalBtn" style="background:none; border:none; color:var(--text-secondary); font-size: 1.3rem; cursor: pointer;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="qr-wrapper">
+          <div id="qrcodeCanvas"></div>
+        </div>
+        <div class="qr-link-box" id="qrLinkText"></div>
+      </div>
+    </div>
+
+    <div id="toastMessage" class="toast">کپی شد!</div>
+
+    <script>
+      const templateVars = {
+        sId: "{{ .sId }}",
+        enabled: "{{ .enabled }}",
+        downloadByte: "{{ .downloadByte }}",
+        uploadByte: "{{ .uploadByte }}",
+        totalByte: "{{ .totalByte }}",
+        expire: "{{ .expire }}",
+        subUrl: "{{ .subUrl }}",
+        subJsonUrl: "{{ .subJsonUrl }}",
+        subClashUrl: "{{ .subClashUrl }}",
+        subTitle: "{{ .subTitle }}",
+        announce: `{{ .announce }}`,
+        links: `{{ range .links }}{{ . }}\n{{ end }}`,
+        emails: `{{ range .emails }}{{ . }}\n{{ end }}`,
+      };
+
+      const BYTES_IN_KB = 1024;
+      const BYTES_IN_MB = 1024 ** 2;
+      const BYTES_IN_GB = 1024 ** 3;
+
+      function normalizeDigits(str) {
+        if (typeof str !== "string") return str;
+        return str.replace(/[۰-۹]/g, c => "۰۱۲۳۴۵۶۷۸۹".indexOf(c)).replace(/[٠-٩]/g, c => "٠١٢٣٤٥٦٧٨٩".indexOf(c));
+      }
+
+      function isPlaceholder(v) { return typeof v === "string" && v.includes("{{") && v.includes("}}"); }
+      function normalize(v, fb) { let t = String(v ?? "").trim(); return (!t || isPlaceholder(t)) ? fb : t; }
+      
+      function toNumber(v) {
+        let val = normalize(v, "");
+        if (!val) return null;
+        let cleaned = normalizeDigits(val).replace(/[٬, ]/g, "").replace(/٫/g, ".");
+        let n = Number(cleaned);
+        return isNaN(n) ? null : n;
+      }
+
+      function parseExpireIso(exp) {
+        let ts = toNumber(exp);
+        if (ts === null || ts === 0) return null;
+        let ms = ts < 1e12 ? ts * 1000 : ts;
+        let d = new Date(ms);
+        return isNaN(d.getTime()) ? null : d.toISOString();
+      }
+
+      function parseEmails(raw) {
+        let txt = normalize(raw, "");
+        if (!txt) return [];
+        return [...new Set(txt.split(/[,\s]+/).filter(Boolean))];
+      }
+
+      function parseLinks(raw) {
+        let txt = normalize(raw, "");
+        return txt ? txt.split(/\r?\n/).filter(l => l.trim()) : [];
+      }
+
+      function decodeBase64Utf8(str) {
+        try {
+          let clean = str.replace(/-/g, "+").replace(/_/g, "/");
+          while (clean.length % 4) clean += "=";
+          return decodeURIComponent(atob(clean).split("").map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join(""));
+        } catch (e) { return null; }
+      }
+
+      function parseConfigName(cfg, defaultName) {
+        if (!cfg) return defaultName;
+        let clean = cfg.trim();
+        if (clean.startsWith("vmess://")) {
+          try {
+            const b64 = clean.replace(/^vmess:\/\//i, "").trim();
+            const decodedJson = decodeBase64Utf8(b64);
+            if (decodedJson) {
+              const data = JSON.parse(decodedJson);
+              if (data && data.ps && String(data.ps).trim()) return String(data.ps).trim();
+            }
+          } catch (e) {}
+        }
+        if (clean.includes("#")) {
+          try {
+            const rawTag = clean.split("#").pop().replace(/\+/g, " ");
+            const decodedTag = decodeURIComponent(rawTag).trim();
+            if (decodedTag) return decodedTag;
+          } catch (e) {}
+        }
+        return defaultName;
+      }
+
+      let totalByteNum = toNumber(templateVars.totalByte);
+      let uploadByteNum = toNumber(templateVars.uploadByte) || 0;
+      let downloadByteNum = toNumber(templateVars.downloadByte) || 0;
+      let usedBytes = uploadByteNum + downloadByteNum;
+      let isDataUnlimited = totalByteNum === null || totalByteNum <= 0;
+      let totalGB = totalByteNum !== null && totalByteNum > 0 ? totalByteNum / BYTES_IN_GB : 0;
+      let usedGB = usedBytes / BYTES_IN_GB;
+      let subLink = normalize(templateVars.subUrl, "");
+      let emailsList = parseEmails(templateVars.emails);
+      let configsList = parseLinks(templateVars.links);
+      let expireISO = parseExpireIso(templateVars.expire);
+      let isEnabled = String(templateVars.enabled).toLowerCase() !== "false";
+
+      const locales = {
+        fa: {
+          flag: "🇮🇷", name: "فارسی", used: "مصرف شده", usage: "مصرف", total: "حجم کل", remained: "باقی مانده",
+          days: "روز", hours: "ساعت", minutes: "دقیقه",
+          copy: "کپی لینک اشتراک", qr: "QR کد اشتراک", active: "فعال", inactive: "غیرفعال",
+          copyDone: "کپی شد! 🎉", copyFail: "خطا ❌", download: "دانلود شده", upload: "آپلود شده",
+          configTitle: "کانفیگ‌ها", noConfig: "کانفیگی موجود نیست", notFound: "موردی یافت نشد",
+          timeExpired: "منقضی شده ⚠️", timeUnlimited: "نامحدود ♾️", remainTime: "زمان باقیمانده",
+          subscriptionHub: "اشتراک شما ✨", copyAll: "کپی همه", searchPlaceholder: "جستجوی کانفیگ...",
+          reloaded: "به‌روزرسانی شد 🔄", bytesUnit: "بایت", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
+          pwaTitle: "نصب اپلیکیشن", pwaDesc: "دسترسی سریع‌تر بدون نیاز به مرورگر", pwaBtn: "نصب"
+        },
+        en: {
+          flag: "🇬🇧", name: "English", used: "Used", usage: "Usage", total: "Total", remained: "Remaining",
+          days: "Days", hours: "Hrs", minutes: "Mins",
+          copy: "Copy Sublink", qr: "Sublink QR", active: "Active", inactive: "Inactive",
+          copyDone: "Copied! 🎉", copyFail: "Failed ❌", download: "Downloaded", upload: "Uploaded",
+          configTitle: "Configs", noConfig: "No configs available", notFound: "No matching configs",
+          timeExpired: "Expired ⚠️", timeUnlimited: "Unlimited ♾️", remainTime: "Remaining time",
+          subscriptionHub: "Your Subscription ✨", copyAll: "Copy All", searchPlaceholder: "Search configs...",
+          reloaded: "Updated 🔄", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
+          pwaTitle: "Install App", pwaDesc: "Fast access right from your home screen", pwaBtn: "Install"
+        },
+        zh: {
+          flag: "🇨🇳", name: "中文", used: "已用流量", usage: "用量", total: "总流量", remained: "剩余流量",
+          days: "天", hours: "小时", minutes: "分钟",
+          copy: "复制订阅链接", qr: "二维码", active: "已激活", inactive: "已失效",
+          copyDone: "已复制! 🎉", copyFail: "失败 ❌", download: "已下载", upload: "已上传",
+          configTitle: "节点列表", noConfig: "暂无可用节点", notFound: "未找到匹配节点",
+          timeExpired: "已过期 ⚠️", timeUnlimited: "无限流量 ♾️", remainTime: "剩余时间",
+          subscriptionHub: "您的订阅 ✨", copyAll: "复制全部", searchPlaceholder: "搜索节点...",
+          reloaded: "已更新 🔄", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
+          pwaTitle: "安装应用", pwaDesc: "添加至主屏幕以便快速访问", pwaBtn: "安装"
+        },
+        ru: {
+          flag: "🇷🇺", name: "Русский", used: "Расход", usage: "Использовано", total: "Всего", remained: "Осталось",
+          days: "Дней", hours: "Часов", minutes: "Мин",
+          copy: "Скопировать", qr: "QR-код", active: "Активен", inactive: "Неактивен",
+          copyDone: "Скопировано! 🎉", copyFail: "Ошибка ❌", download: "Скачано", upload: "Загружено",
+          configTitle: "Конфигурации", noConfig: "Нет конфигураций", notFound: "Не найдено",
+          timeExpired: "Истёк ⚠️", timeUnlimited: "Безлимит ♾️", remainTime: "Осталось времени",
+          subscriptionHub: "Ваша Подписка ✨", copyAll: "Скопировать всё", searchPlaceholder: "Поиск...",
+          reloaded: "Обновлено 🔄", bytesUnit: "Б", kbUnit: "КБ", mbUnit: "МБ", volumeUnit: "ГБ",
+          pwaTitle: "Установить", pwaDesc: "Быстрый доступ с главного экрана", pwaBtn: "Скачать"
+        },
+        tr: {
+          flag: "🇹🇷", name: "Türkçe", used: "Kullanılan", usage: "Kullanım", total: "Toplam", remained: "Kalan",
+          days: "Gün", hours: "Saat", minutes: "Dakika",
+          copy: "Aboneliği Kopyala", qr: "QR Kodu", active: "Aktif", inactive: "Pasif",
+          copyDone: "Kopyalandı! 🎉", copyFail: "Hata ❌", download: "İndirilen", upload: "Yüklenen",
+          configTitle: "Konfigürasyonlar", noConfig: "Konfigürasyon yok", notFound: "Sonuç bulunamadı",
+          timeExpired: "Süresi Doldu ⚠️", timeUnlimited: "Sınırsız ♾️", remainTime: "Kalan Süre",
+          subscriptionHub: "Aboneliğiniz ✨", copyAll: "Tümünü Kopyala", searchPlaceholder: "Ara...",
+          reloaded: "Güncellendi 🔄", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
+          pwaTitle: "Uygulamayı Yükle", pwaDesc: "Ana ekranınızdan hızlı erişim sağlayın", pwaBtn: "Yükle"
+        }
+      };
+
+      let currentLang = localStorage.getItem("nexus_gold_lang") || "fa";
+      let currentTheme = localStorage.getItem("nexus_gold_theme") || "dark";
+      let configSearchTerm = "";
+      let activeProtocol = "all";
+      let deferredPrompt = null;
+
+      function t(key) { return locales[currentLang][key] || key; }
+      function toFaDigits(v) { return String(v ?? "").replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]); }
+      function formatDisplay(v) { return currentLang === "fa" ? toFaDigits(v) : String(v ?? ""); }
+
+      function formatFixed(v, digits = 1) {
+        const n = Number(v);
+        if (!Number.isFinite(n)) return formatDisplay("0");
+        const rounded = Number(n.toFixed(digits));
+        const text = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(digits).replace(/0+$/, "").replace(/\.$/, "");
+        return formatDisplay(text);
+      }
+
+      function formatBytesParts(bytes) {
+        const n = Number(bytes);
+        const safeBytes = Number.isFinite(n) && n > 0 ? n : 0;
+        if (safeBytes < BYTES_IN_KB) return { value: formatFixed(safeBytes), unit: t("bytesUnit") };
+        if (safeBytes < BYTES_IN_MB) return { value: formatFixed(safeBytes / BYTES_IN_KB), unit: t("kbUnit") };
+        if (safeBytes < BYTES_IN_GB) return { value: formatFixed(safeBytes / BYTES_IN_MB), unit: t("mbUnit") };
+        return { value: formatFixed(safeBytes / BYTES_IN_GB), unit: t("volumeUnit") };
+      }
+
+      function setVolumeStat(valId, unitId, bytes) {
+        const valEl = document.getElementById(valId);
+        if (!valEl) return;
+        const parts = formatBytesParts(bytes);
+        valEl.textContent = parts.value;
+        const unitEl = document.getElementById(unitId);
+        if (unitEl) unitEl.textContent = parts.unit;
+      }
+
+      function gregorianToJalali(gy, gm, gd) {
+        const gDm = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+        let jy = gy <= 1600 ? 0 : 979; gy -= gy <= 1600 ? 621 : 1600;
+        const gy2 = gm > 2 ? gy + 1 : gy;
+        let days = 365 * gy + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) - 80 + gd + gDm[gm - 1];
+        jy += 33 * Math.floor(days / 12053); days %= 12053;
+        jy += 4 * Math.floor(days / 1461); days %= 1461;
+        if (days > 365) { jy += Math.floor((days - 1) / 365); days = (days - 1) % 365; }
+        const jm = days < 186 ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
+        const jd = 1 + (days < 186 ? days % 31 : (days - 186) % 30);
+        return [jy, jm, jd];
+      }
+
+      function formatDateOnly(date) {
+        if (!date || isNaN(date.getTime())) return "";
+        if (currentLang === "fa") {
+          const [jy, jm, jd] = gregorianToJalali(date.getFullYear(), date.getMonth() + 1, date.getDate());
+          return toFaDigits(`${jy}/${String(jm).padStart(2, "0")}/${String(jd).padStart(2, "0")}`);
+        }
+        return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}`;
+      }
+
+      function showToast(msg) {
+        let toast = document.getElementById("toastMessage");
+        toast.innerText = msg; toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2000);
+      }
+
+      function showQR(data, title) {
+        if (!data) return showToast(t("copyFail"));
+        document.getElementById("modalQrTitle").innerText = title || t("qr");
+        document.getElementById("qrLinkText").textContent = data;
+        const qrContainer = document.getElementById("qrcodeCanvas");
+        qrContainer.innerHTML = "";
+        new QRCode(qrContainer, { text: data, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff" });
+        document.getElementById("qrModal").classList.add("show");
+      }
+
+      function closeModal() { document.getElementById("qrModal").classList.remove("show"); }
+
+      async function copyText(text, btnElement = null) {
+        if (!text) return showToast(t("copyFail"));
+        
+        if (btnElement && btnElement.id === "copyMainBtn") {
+          const origText = document.getElementById("copyMainText").innerText;
+          btnElement.classList.add("copied");
+          document.getElementById("copyMainText").innerText = t("copyDone");
+          setTimeout(() => {
+            btnElement.classList.remove("copied");
+            document.getElementById("copyMainText").innerText = origText;
+          }, 1800);
+        }
+
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            throw new Error('Fallback required');
+          }
+          showToast(t("copyDone"));
+        } catch (e) {
+          const ta = document.createElement("textarea"); ta.value = text;
+          ta.style.position = "fixed"; ta.style.left = "-9999px";
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); showToast(t("copyDone")); } catch (err) { showToast(t("copyFail")); }
+          document.body.removeChild(ta);
+        }
+      }
+
+      function setProgressRing(percent) {
+        const circle = document.getElementById('usageRing');
+        if (!circle) return;
+        const circumference = 2 * Math.PI * 42;
+        circle.style.strokeDasharray = `${circumference}`;
+        circle.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+
+        let colorVal, glowVal;
+
+        if (percent >= 85) {
+          colorVal = "var(--danger)";
+          glowVal = "rgba(239, 68, 68, 0.45)";
+        } else if (percent >= 60) {
+          colorVal = "var(--warning)";
+          glowVal = "rgba(245, 158, 11, 0.45)";
+        } else {
+          colorVal = "var(--success)";
+          glowVal = "rgba(16, 185, 129, 0.45)";
+        }
+
+        document.documentElement.style.setProperty('--gauge-color', colorVal);
+        document.documentElement.style.setProperty('--gauge-glow', glowVal);
+      }
+
+      function renderStatsAndRing() {
+        let unlimited = isDataUnlimited || totalGB <= 0;
+        let usedPercent = !unlimited && totalGB > 0 ? Math.min(100, Math.max(0, (usedGB / totalGB) * 100)) : 0;
+        
+        setVolumeStat("usedStatValue", "usedUnit", usedBytes);
+        if (unlimited) {
+          document.getElementById("totalStatValue").innerHTML = "∞";
+          document.getElementById("totalUnit").innerText = "";
+          document.getElementById("remainedStatValue").innerHTML = "∞";
+          document.getElementById("remainedUnit").innerText = "";
+        } else {
+          setVolumeStat("totalStatValue", "totalUnit", totalByteNum || 0);
+          setVolumeStat("remainedStatValue", "remainedUnit", Math.max(0, totalByteNum - usedBytes));
+        }
+
+        document.getElementById("ringPercentText").innerHTML = unlimited ? "∞" : formatDisplay(Math.floor(usedPercent)) + "%";
+        setProgressRing(unlimited ? 0 : usedPercent);
+
+        setVolumeStat("downloadVal", "downloadUnit", downloadByteNum || 0);
+        setVolumeStat("uploadVal", "uploadUnit", uploadByteNum || 0);
+
+        let isActive = isEnabled && (!expireISO || new Date(expireISO) > new Date()) && !( !unlimited && usedGB >= totalGB );
+        document.getElementById("statusIcon").className = isActive ? "fa-solid fa-circle-check" : "fa-solid fa-circle-xmark";
+        document.getElementById("statusText").innerText = isActive ? t("active") : t("inactive");
+        document.getElementById("statusChip").className = isActive ? "status-badge" : "status-badge inactive";
+
+        const expiryPreview = document.getElementById("expiryDatePreview");
+        if (expireISO && new Date(expireISO) > new Date()) expiryPreview.innerText = formatDateOnly(new Date(expireISO));
+        else if (!expireISO) expiryPreview.innerText = t("timeUnlimited");
+        else expiryPreview.innerText = t("timeExpired");
+      }
+
+      function updateCountdownTick() {
+        if (!expireISO) {
+          document.getElementById("daysLeft").innerText = "∞";
+          document.getElementById("hoursLeft").innerText = "∞";
+          document.getElementById("minutesLeft").innerText = "∞";
+          return;
+        }
+        const diff = Math.max(0, new Date(expireISO).getTime() - Date.now());
+        document.getElementById("daysLeft").innerText = formatDisplay(Math.floor(diff / 86400000));
+        document.getElementById("hoursLeft").innerText = formatDisplay(Math.floor((diff % 86400000) / 3600000));
+        document.getElementById("minutesLeft").innerText = formatDisplay(Math.floor((diff % 3600000) / 60000));
+      }
+
+      function renderConfigs() {
+        const container = document.getElementById("configListContainer");
+        const searchBox = document.getElementById("configSearchBox");
+        if (!container) return;
+        container.innerHTML = "";
+
+        let renderedCount = 0;
+        const jsonSub = normalize(templateVars.subJsonUrl, "");
+        const clashSub = normalize(templateVars.subClashUrl, "");
+
+        if (jsonSub && activeProtocol === "all" && (!configSearchTerm || "json".includes(configSearchTerm.toLowerCase()))) {
+          appendConfigItem(container, "JSON Sub", jsonSub, "fa-solid fa-code"); renderedCount++;
+        }
+        if (clashSub && activeProtocol === "all" && (!configSearchTerm || "clash".includes(configSearchTerm.toLowerCase()))) {
+          appendConfigItem(container, "Clash Sub", clashSub, "fa-solid fa-cat"); renderedCount++;
+        }
+
+        configsList.forEach((cfg, idx) => {
+          const lowerCfg = cfg.toLowerCase().trim();
+          
+          if (activeProtocol !== "all") {
+            if (activeProtocol === "vless" && !lowerCfg.startsWith("vless://")) return;
+            if (activeProtocol === "vmess" && !lowerCfg.startsWith("vmess://")) return;
+            if (activeProtocol === "trojan" && !lowerCfg.startsWith("trojan://")) return;
+            if (activeProtocol === "ss" && !lowerCfg.startsWith("ss://")) return;
+          }
+
+          const name = parseConfigName(cfg, t("configTitle") + " " + formatDisplay(idx + 1));
+          if (!configSearchTerm || name.toLowerCase().includes(configSearchTerm.toLowerCase()) || lowerCfg.includes(configSearchTerm.toLowerCase())) {
+            appendConfigItem(container, name, cfg); renderedCount++;
+          }
+        });
+
+        if (searchBox) searchBox.style.display = configsList.length > 3 ? "block" : "none";
+
+        if (renderedCount === 0) {
+          container.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-secondary); font-size:0.8rem;">${configSearchTerm ? t("notFound") : t("noConfig")}</div>`;
+        }
+      }
+
+      function appendConfigItem(container, name, url, icon) {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        item.innerHTML = `
+          <div class="list-item-title">
+            ${icon ? `<i class="${icon}" style="margin-inline-end:0.4rem; color:var(--gold-light)"></i>` : '🚀 '}
+            <span>${name}</span>
+          </div>
+          <div class="list-actions">
+            <button class="mini-btn copy-btn" aria-label="Copy Config"><i class="fa-regular fa-copy"></i></button>
+            <button class="mini-btn qr-btn" aria-label="QR Code"><i class="fa-solid fa-qrcode"></i></button>
+          </div>
+        `;
+        item.querySelector(".copy-btn").onclick = () => copyText(url);
+        item.querySelector(".qr-btn").onclick = () => showQR(url, name);
+        container.appendChild(item);
+      }
+
+      function updateUI() {
+        document.documentElement.lang = currentLang;
+        document.documentElement.dir = currentLang === "fa" ? "rtl" : "ltr";
+        document.documentElement.setAttribute("data-theme", currentTheme);
+        
+        localStorage.setItem("nexus_gold_lang", currentLang);
+        localStorage.setItem("nexus_gold_theme", currentTheme);
+
+        const themeBtnIcon = document.querySelector("#themeToggleBtn i");
+        if (themeBtnIcon) {
+          themeBtnIcon.className = currentTheme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
+        }
+
+        document.getElementById("panelTitle").textContent = normalize(templateVars.subTitle, "") || t("subscriptionHub");
+        document.getElementById("userEmailText").textContent = emailsList.length > 0 ? emailsList[0] : "";
+        document.getElementById("currentLangFlag").innerText = t("flag");
+        document.getElementById("currentLangLabel").innerText = t("name");
+
+        document.querySelectorAll(".lang-item").forEach(item => {
+          item.classList.toggle("active", item.dataset.lang === currentLang);
+        });
+
+        const announceVal = normalize(templateVars.announce, "");
+        if (announceVal) {
+          document.getElementById("announceText").textContent = announceVal;
+          document.getElementById("announceCard").style.display = "flex";
+        } else {
+          document.getElementById("announceCard").style.display = "none";
+        }
+
+        document.getElementById("usedStatLabel").innerText = t("used");
+        document.getElementById("totalStatLabel").innerText = t("total");
+        document.getElementById("downloadLabel").innerText = t("download");
+        document.getElementById("uploadLabel").innerText = t("upload");
+        document.getElementById("remainedStatLabel").innerText = t("remained");
+        document.getElementById("ringUsageLabel").innerText = t("usage");
+        document.getElementById("configsTitle").innerText = t("configTitle");
+        document.getElementById("copyMainText").innerText = t("copy");
+        document.getElementById("qrText").innerText = t("qr");
+        document.getElementById("copyAllText").innerText = t("copyAll");
+        document.getElementById("daysLabel").innerText = t("days");
+        document.getElementById("hoursLabel").innerText = t("hours");
+        document.getElementById("minutesLabel").innerText = t("minutes");
+        document.getElementById("expiryTextLabel").innerText = t("remainTime");
+        document.getElementById("configSearchInput").placeholder = t("searchPlaceholder");
+
+        document.getElementById("pwaTitle").innerText = t("pwaTitle");
+        document.getElementById("pwaDesc").innerText = t("pwaDesc");
+        document.getElementById("pwaBtnText").innerText = t("pwaBtn");
+
+        renderStatsAndRing();
+        updateCountdownTick();
+        renderConfigs();
+      }
+
+      function initParticles() {
+        const canvas = document.getElementById("particlesCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        });
+
+        const particles = Array.from({ length: 30 }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 2 + 0.8,
+          speedY: Math.random() * 0.4 + 0.1,
+          opacity: Math.random() * 0.6 + 0.2
+        }));
+
+        function draw() {
+          if (document.hidden) return;
+          ctx.clearRect(0, 0, width, height);
+          ctx.fillStyle = currentTheme === "dark" ? "rgba(245, 158, 11, 0.8)" : "rgba(217, 119, 6, 0.6)";
+          
+          particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.globalAlpha = p.opacity;
+            ctx.fill();
+
+            p.y -= p.speedY;
+            if (p.y < 0) {
+              p.y = height;
+              p.x = Math.random() * width;
+            }
+          });
+          requestAnimationFrame(draw);
+        }
+        draw();
+      }
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (!localStorage.getItem("pwa_banner_dismissed")) {
+          setTimeout(() => {
+            document.getElementById("pwaInstallBanner").classList.add("show");
+          }, 2000);
+        }
+      });
+
+      document.getElementById("pwaInstallBtn").addEventListener("click", async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          document.getElementById("pwaInstallBanner").classList.remove("show");
+        }
+        deferredPrompt = null;
+      });
+
+      document.getElementById("pwaCloseBtn").addEventListener("click", () => {
+        document.getElementById("pwaInstallBanner").classList.remove("show");
+        localStorage.setItem("pwa_banner_dismissed", "true");
+      });
+
+      document.getElementById("themeToggleBtn").addEventListener("click", () => {
+        currentTheme = currentTheme === "dark" ? "light" : "dark";
+        updateUI();
+      });
+
+      document.addEventListener('click', function(e) {
+        const target = e.target.closest('.card, .btn-gold, .btn-glass, .lang-btn, .mini-btn');
+        if (!target) return;
+
+        const rect = target.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+        ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+        target.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600);
+      });
+
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -4;
+          const rotateY = ((x - centerX) / centerX) * 4;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+
+      const langSelectBtn = document.getElementById("langSelectBtn");
+      const langMenu = document.getElementById("langMenu");
+
+      langSelectBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        langMenu.classList.toggle("show");
+      });
+
+      document.querySelectorAll(".lang-item").forEach(item => {
+        item.addEventListener("click", () => {
+          currentLang = item.dataset.lang;
+          langMenu.classList.remove("show");
+          updateUI();
+        });
+      });
+
+      document.addEventListener("click", () => {
+        langMenu.classList.remove("show");
+      });
+
+      document.querySelectorAll(".proto-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          document.querySelectorAll(".proto-chip").forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          activeProtocol = chip.dataset.proto;
+          renderConfigs();
+        });
+      });
+
+      document.getElementById("reloadBtn").addEventListener("click", function() {
+        this.classList.add("spin");
+        setTimeout(() => {
+          updateUI();
+          this.classList.remove("spin");
+          showToast(t("reloaded"));
+        }, 500);
+      });
+
+      document.getElementById("configSearchInput").addEventListener("input", e => {
+        configSearchTerm = e.target.value.trim();
+        renderConfigs();
+      });
+
+      document.getElementById("copyMainBtn").onclick = function() { copyText(subLink, this); };
+      document.getElementById("qrMainBtn").onclick = () => showQR(subLink, t("qr"));
+      document.getElementById("closeModalBtn").onclick = closeModal;
+      document.getElementById("qrModal").onclick = e => { if (e.target === document.getElementById("qrModal")) closeModal(); };
+      document.getElementById("copyAllConfigsBtn").onclick = () => {
+        if (configsList.length === 0) return showToast(t("noConfig"));
+        copyText(configsList.join("\n"));
+      };
+
+      updateUI();
+      initParticles();
+      setInterval(updateCountdownTick, 1000);
+    </script>
+  </body>
+</html>
