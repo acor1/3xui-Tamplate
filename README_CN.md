@@ -36,11 +36,13 @@
 ## ✨ 特色功能
 
 ### 🎨 亮色与暗色主题
+
 智能切换亮色和暗色模式，用户偏好保存在浏览器中 —— 下次访问时自动启用上次选择的主题。
 
 ---
 
 ### 🌐 多语言（5 种语言）
+
 完整支持：
 
 | 语言 | 地区 | 文字方向 |
@@ -56,6 +58,7 @@
 ---
 
 ### 📊 动态三色环形进度条
+
 交互式流量使用进度条，带颜色指示：
 
 - 🟢 **翠绿色** —— 使用量低
@@ -65,6 +68,7 @@
 ---
 
 ### ⏳ 实时倒计时
+
 精确显示订阅剩余时间：
 
 - 剩余天数
@@ -74,7 +78,9 @@
 ---
 
 ### 📱 PWA 应用安装支持
+
 支持"添加到主屏幕"：
+
 - iOS (Safari)
 - Android (Chrome、Firefox)
 
@@ -83,6 +89,7 @@
 ---
 
 ### ⚡ 配置搜索与筛选
+
 - 🔍 **实时搜索框** —— 输入即出结果
 - 🏷 **快速筛选标签**，支持以下协议：
   - VLESS
@@ -93,6 +100,7 @@
 ---
 
 ### 🚀 极致轻量
+
 - 无重型框架
 - 纯 CSS 与 JS
 - 加载时间低于 100 毫秒
@@ -116,18 +124,16 @@ bash <(curl -Ls https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/insta
 
 | 步骤 | 说明 |
 |:---|:---|
-| 1 | 备份当前模板 |
-| 2 | 下载新模板 |
+| 1 | 若目录不存在则创建 |
+| 2 | 下载最新模板 |
 | 3 | 替换面板中的 `sub.html` |
-| 4 | 重启 3X-UI 服务 |
+| 4 | 设置正确的文件权限 |
 
-### 默认路径
+### 安装路径
 
-```
-/usr/local/x-ui/bin/sub.html
-```
+`/etc/x-ui/sub/sub.html`
 
-如果你的面板安装在其他路径，脚本会自动检测。
+脚本会自动创建目录、删除旧文件，并替换为新模板。
 
 ---
 
@@ -141,22 +147,24 @@ bash <(curl -Ls https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/insta
 wget https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
 ```
 
-### 2. 备份当前文件
+### 2. 创建目录（如果不存在）
 
 ```bash
-cp /usr/local/x-ui/bin/sub.html /usr/local/x-ui/bin/sub.html.bak
+sudo mkdir -p /etc/x-ui/sub
+sudo chmod 755 /etc/x-ui/sub
 ```
 
 ### 3. 替换文件
 
 ```bash
-cp sub.html /usr/local/x-ui/bin/sub.html
+sudo cp sub.html /etc/x-ui/sub/sub.html
+sudo chmod 644 /etc/x-ui/sub/sub.html
 ```
 
 ### 4. 重启服务
 
 ```bash
-systemctl restart x-ui
+sudo systemctl restart x-ui
 ```
 
 ---
@@ -190,7 +198,7 @@ systemctl restart x-ui
 
 ```bash
 # 检查文件是否已复制
-ls -la /usr/local/x-ui/bin/sub.html
+ls -la /etc/x-ui/sub/sub.html
 
 # 重启服务
 systemctl restart x-ui
@@ -214,6 +222,16 @@ Ctrl + Shift + Delete
 ### ❌ 刷新后主题恢复默认
 
 请允许浏览器使用 LocalStorage。在隐私浏览模式下，主题不会被保存。
+
+### ❌ 安装脚本报错
+
+如果出现下载错误，请先检查服务器网络连接：
+
+```bash
+curl -I https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
+```
+
+应返回 `HTTP/2 200`。
 
 ---
 
