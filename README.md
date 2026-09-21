@@ -1,4 +1,3 @@
-کد کامل فایل README.md به‌صورت یکپارچه و به زبان فارسی، آماده کپی مستقیم:
 <div align="center">
 
 # ⚡ قالب اختصاصی اشتراک 3X-UI
@@ -30,7 +29,6 @@
 - ⏳ **تایمر معکوس لحظه‌ای:** تایمر دقیق معکوس برای نمایش روزها، ساعت‌ها و دقایق باقی‌مانده از اعتبار اشتراک.
 - 📱 **قابلیت نصب اپلیکیشن (PWA):** پشتیبانی از قابلیت افزودن پنل به صفحه اصلی گوشی ("Add to Home Screen") در سیستم‌عامل‌های iOS و اندروید.
 - ⚡ **جستجو و فیلتر کانفیگ‌ها:** باکس جستجوی لحظه‌ای و چیپ‌های فیلتر سریع برای نودهای VLESS ،VMESS ،Trojan و Shadowsocks.
-- 🔐 **معماری تک‌فایلی و تمیز:** ارائه‌شده در قالب یک فایل واحد و بهینه‌شده، بدون هیچ‌گونه اسکریپت ردیابی یا کدهای اضافی.
 
 ---
 
@@ -40,20 +38,3 @@
 
 ```bash
 bash <(curl -Ls [https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/install.sh](https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/install.sh))
-
-📂 مسیر نصب
-اسکریپت نصب به‌صورت خودکار فایل قالب را در مسیر استاندارد زیر مستقر می‌کند:
-/etc/x-ui/sub/sub.html
-
-💻 نصب دستی
-در صورتی که ترجیح می‌دهید قالب را به‌صورت دستی نصب کنید، دستورات زیر را در سرور خود اجرا کنید:
-mkdir -p /etc/x-ui/sub
-wget -O /etc/x-ui/sub/sub.html [https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html](https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html)
-chmod 644 /etc/x-ui/sub/sub.html
-
-📜 لایسنس
-این پروژه تحت لایسنس MIT منتشر شده است.
-<div align="center">
-<sub>توسعه و نگهداری با ❤️ توسط <a href="https://github.com/acor1">acor1</a></sub>
-</div>
-
