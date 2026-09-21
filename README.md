@@ -124,7 +124,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/insta
 ### مسیر پیش‌فرض
 
 ```
-/usr/local/x-ui/bin/sub.html
+/etc/x-ui/sub
 ```
 
 اگه پنلت در مسیر دیگه‌ای نصبه، اسکریپت به‌صورت خودکار تشخیص می‌ده.
@@ -144,13 +144,13 @@ wget https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
 ### ۲. بکاپ از فایل فعلی
 
 ```bash
-cp /usr/local/x-ui/bin/sub.html /usr/local/x-ui/bin/sub.html.bak
+cp /etc/x-ui/sub/sub.html /etc/x-ui/sub/sub.html.bak
 ```
 
 ### ۳. جایگزینی
 
 ```bash
-cp sub.html /usr/local/x-ui/bin/sub.html
+cp sub.html /etc/x-ui/sub/sub.html
 ```
 
 ### ۴. ری‌استارت
@@ -190,7 +190,7 @@ systemctl restart x-ui
 
 ```bash
 # چک کن فایل کپی شده
-ls -la /usr/local/x-ui/bin/sub.html
+ls -la /etc/x-ui/sub/sub.html
 
 # ری‌استارت کن
 systemctl restart x-ui
@@ -219,17 +219,17 @@ Ctrl + Shift + Delete
 
 ## 📄 لایسنس
 
-این پروژه تحت لایسنس **MIT** منتشر شده. برای جزئیات فایل [LICENSE](LICENSEstyle) رو ببین.
+این پروژه تحت لایسنس **MIT** منتشر شده. برای جزئیات فایل [LICENSE](LICENSE) رو ببین.
 
 ---
 
-=<div align="center">
+<div align="center">
 
-## 👨‍💻 سازforنده
+## 👨‍💻 سازنده
 
 **acor1**
 
--the[![GitHub](https://img-badge.shields.io/badge/GitHub-acor1-black?&logo=github)](https://github.com/acor1)
+[![GitHub](https://img.shields.io/badge/GitHub-acor1-black?style=for-the-badge&logo=github)](https://github.com/acor1)
 [![Repository](https://img.shields.io/badge/Repo-3xui__Tamplate-blue?style=for-the-badge&logo=git)](https://github.com/acor1/3xui-Tamplate)
 
 ---
