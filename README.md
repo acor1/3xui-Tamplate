@@ -38,4 +38,4 @@
 برای نصب و فعال‌سازی خودکار قالب روی پنل **3X-UI**، کافیست دستور تک‌خطی زیر را در ترمینال سرور اجرا کنید:
 
 ```bash
-bash <(curl -Ls [https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/install.sh](https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/install.sh)
