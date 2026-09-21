@@ -51,12 +51,12 @@
 | 🇷🇺 Русский | Russia | LTR |
 | 🇹🇷 Türkçe | Turkey | LTR |
 
-تغییر جهت صفحه خودکار انجام می‌شه.
+تاخغییر جهت صفحه خودکار انجامص می‌شه.
 
 ---
 
-### 📊 نوار دایره‌ای ۳ رنگ پویا
-گِیج مصرف تعاملی با شاخص‌های رنگی:
+### 📊 نوار‌ دایره‌ای های۳ رنگ پویا
+گِی رج مصرف تعاملی با شنگی:
 
 - 🟢 **سبز زمردی** — مصرف کم
 - 🟠 **نارنجی گرم** — مصرف متوسط
@@ -92,9 +92,12 @@
 
 ---
 
-### 🚀 فوق‌العاده سبک
-- بدون فریم‌ورک سنگین
-- CSS و JS خالص
+### 🚀 فوق‌العاده سبک/x-ui/sub
+- بدون فریم‌
+ورک سنگین
+-```
+
+ CSS و JS### خالص
 - بارگذاری زیر ۱۰۰ میلی‌ثانیه
 - بهینه برای سرورهای ضعیف
 
@@ -116,18 +119,18 @@ bash <(curl -Ls https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/insta
 
 | مرحله | توضیح |
 |:---|:---|
-| ۱ | بکاپ از قالب فعلی |
-| ۲ | دانلود قالب جدید |
+| ۱ | ساخت پوشه نصب در صورت نبود |
+| ۲ | دانلود جدیدترین قالب |
 | ۳ | جایگزینی فایل `sub.html` در پنل |
-| ۴ | ری‌استارت سرویس 3X-UI |
+| ۴ | تنظیم مجوزهای فایل |
 
-### مسیر پیش‌فرض
+### مسیر نصب
 
 ```
-/etc/x-ui/sub
+/etc/x-ui/sub/sub.html
 ```
 
-اگه پنلت در مسیر دیگه‌ای نصبه، اسکریپت به‌صورت خودکار تشخیص می‌ده.
+اسکریپت به‌صورت خودکار پوشه رو می‌سازه، فایل قدیمی رو حذف می‌کنه، و قالب جدید رو جایگزین می‌کنه.
 
 ---
 
@@ -141,22 +144,21 @@ bash <(curl -Ls https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/insta
 wget https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
 ```
 
-### ۲. بکاپ از فایل فعلی
+### ۲. ساخت پوشه (اگه نبود)
 
 ```bash
-cp /etc/x-ui/sub/sub.html /etc/x-ui/sub/sub.html.bak
-```
-
-### ۳. جایگزینی
+sudo mkdir -p /etc/x-ui/sub
+sudo chmod 755 /etc ۳. جایگزینی
 
 ```bash
-cp sub.html /etc/x-ui/sub/sub.html
+sudo cp sub.html /etc/x-ui/sub/sub.html
+sudo chmod 644 /etc/x-ui/sub/sub.html
 ```
 
 ### ۴. ری‌استارت
 
 ```bash
-systemctl restart x-ui
+sudo systemctl restart x-ui
 ```
 
 ---
@@ -214,6 +216,16 @@ Ctrl + Shift + Delete
 ### ❌ تم بعد از refresh برمی‌گرده
 
 بذار مرورگر اجازه LocalStorage بده. در حالت Private Browsing، تم ذخیره نمی‌شه.
+
+### ❌ اسکریپت نصب خطا می‌ده
+
+اگه با خطای دانلود مواجه شدی، اول اینترنت سرور رو چک کن:
+
+```bash
+curl -I https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
+```
+
+باید `HTTP/2 200` برگردونه.
 
 ---
 
