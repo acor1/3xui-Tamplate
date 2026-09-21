@@ -34,4 +34,3 @@
 
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/install.sh)
-sh))
