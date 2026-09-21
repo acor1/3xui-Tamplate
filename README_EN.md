@@ -36,11 +36,13 @@
 ## ✨ Features
 
 ### 🎨 Light & Dark Themes
+
 Smart switching between light and dark mode with the user's preference saved in the browser — the next time they visit, their last theme is already active.
 
 ---
 
 ### 🌐 Multilingual (5 Languages)
+
 Full support for:
 
 | Language | Region | RTL/LTR |
@@ -56,6 +58,7 @@ Page direction (RTL/LTR) is adjusted automatically.
 ---
 
 ### 📊 Dynamic 3-Color Circular Gauge
+
 An interactive usage gauge with color indicators:
 
 - 🟢 **Emerald Green** — Low usage
@@ -65,6 +68,7 @@ An interactive usage gauge with color indicators:
 ---
 
 ### ⏳ Real-Time Countdown Timer
+
 A precise countdown timer displaying:
 
 - Remaining days
@@ -74,7 +78,9 @@ A precise countdown timer displaying:
 ---
 
 ### 📱 PWA Support (Install as App)
+
 Supports "Add to Home Screen" on:
+
 - iOS (Safari)
 - Android (Chrome, Firefox)
 
@@ -83,6 +89,7 @@ Once installed, it works like a native app — icon, splash screen, and full-scr
 ---
 
 ### ⚡ Search & Filter Configs
+
 - 🔍 **Instant search box** — type and see results immediately
 - 🏷 **Quick filter chips** for protocols:
   - VLESS
@@ -93,6 +100,7 @@ Once installed, it works like a native app — icon, splash screen, and full-scr
 ---
 
 ### 🚀 Ultra-Lightweight
+
 - No heavy frameworks
 - Pure CSS and JS
 - Loads in under 100ms
@@ -116,18 +124,16 @@ The script automatically performs the following steps:
 
 | Step | Description |
 |:---|:---|
-| 1 | Backs up the current template |
-| 2 | Downloads the new template |
+| 1 | Creates the install directory if missing |
+| 2 | Downloads the latest template |
 | 3 | Replaces `sub.html` in the panel |
-| 4 | Restarts the 3X-UI service |
+| 4 | Sets proper file permissions |
 
-### Default Path
+### Install Path
 
-```
-/usr/local/x-ui/bin/sub.html
-```
+`/etc/x-ui/sub/sub.html`
 
-If your panel is installed elsewhere, the script auto-detects the correct path.
+The script automatically creates the directory, removes the old file, and replaces it with the new template.
 
 ---
 
@@ -141,22 +147,24 @@ If you prefer manual installation:
 wget https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
 ```
 
-### 2. Backup the current file
+### 2. Create directory (if missing)
 
 ```bash
-cp /usr/local/x-ui/bin/sub.html /usr/local/x-ui/bin/sub.html.bak
+sudo mkdir -p /etc/x-ui/sub
+sudo chmod 755 /etc/x-ui/sub
 ```
 
 ### 3. Replace
 
 ```bash
-cp sub.html /usr/local/x-ui/bin/sub.html
+sudo cp sub.html /etc/x-ui/sub/sub.html
+sudo chmod 644 /etc/x-ui/sub/sub.html
 ```
 
 ### 4. Restart
 
 ```bash
-systemctl restart x-ui
+sudo systemctl restart x-ui
 ```
 
 ---
@@ -190,7 +198,7 @@ systemctl restart x-ui
 
 ```bash
 # Check if the file was copied
-ls -la /usr/local/x-ui/bin/sub.html
+ls -la /etc/x-ui/sub/sub.html
 
 # Restart the service
 systemctl restart x-ui
@@ -214,6 +222,16 @@ Ctrl + Shift + Delete
 ### ❌ Theme resets after refresh
 
 Allow LocalStorage in your browser. In Private Browsing mode, the theme won't be saved.
+
+### ❌ Install script fails
+
+If you get a download error, first check your server's internet connection:
+
+```bash
+curl -I https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
+```
+
+It should return `HTTP/2 200`.
 
 ---
 
