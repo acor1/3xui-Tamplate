@@ -4,12 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>{{ .subTitle }}</title>
-    
+
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Subscription Panel" />
     <meta name="theme-color" content="#040507" />
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f59e0b'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23000' font-family='Arial' font-weight='bold'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E" />
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Vazirmatn:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -19,7 +21,7 @@
       :root {
         color-scheme: dark;
         --font-main: "Vazirmatn", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        
+
         --gold-primary: #f59e0b;
         --gold-light: #fbbf24;
         --gold-dark: #d97706;
@@ -136,11 +138,11 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       }
 
-      .header-info { display: flex; flex-direction: column; }
+      .header-info { display: flex; flex-direction: column; min-width: 0; }
       .header-title { font-size: clamp(1rem, 4vw, 1.15rem); font-weight: 900; background: linear-gradient(135deg, var(--text-primary) 30%, var(--gold-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
       .header-email { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem; word-break: break-all; }
 
-      .header-actions { display: flex; align-items: center; gap: 0.4rem; }
+      .header-actions { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
 
       .icon-action-btn {
         width: 2.2rem; height: 2.2rem;
@@ -157,7 +159,7 @@
       @keyframes spin { to { transform: rotate(360deg); } }
 
       .lang-dropdown-wrapper { position: relative; z-index: 101; }
-      
+
       .lang-btn {
         display: flex;
         align-items: center;
@@ -283,7 +285,7 @@
       html[dir="ltr"] .announce-card { border-right: 1px solid var(--border); border-left: 4px solid var(--gold-primary); }
 
       .usage-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-      
+
       .ring-container {
         position: relative;
         width: 125px;
@@ -376,7 +378,7 @@
       .timer-label { font-size: 0.65rem; color: var(--text-secondary); margin-top: 0.25rem; font-weight: 600; }
 
       .main-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
-      
+
       .btn-gold {
         position: relative;
         overflow: hidden;
@@ -394,7 +396,7 @@
         transition: 0.2s;
       }
       .btn-gold:active { transform: scale(0.97); }
-      
+
       .btn-gold.copied {
         background: #10b981 !important;
         color: #fff !important;
@@ -416,6 +418,12 @@
       }
       .btn-glass:active { transform: scale(0.97); }
 
+      .btn-gold:disabled, .btn-glass:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
       .proto-filter-wrapper {
         display: flex;
         gap: 0.4rem;
@@ -425,7 +433,7 @@
         scrollbar-width: none;
       }
       .proto-filter-wrapper::-webkit-scrollbar { display: none; }
-      
+
       .proto-chip {
         padding: 0.35rem 0.75rem;
         border-radius: 1.5rem;
@@ -446,7 +454,7 @@
         font-weight: 900;
       }
 
-      .config-section-header { display: flex; justify-content: space-between; align- items: center; margin-bottom: 0.85rem; }
+      .config-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; }
       .section-title { font-size: 1rem; font-weight: 900; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem; }
 
       .search-box { position: relative; margin-bottom: 0.85rem; }
@@ -478,7 +486,23 @@
       }
       .list-item:hover { border-color: var(--gold-border); transform: translateX(-3px); }
       html[dir="ltr"] .list-item:hover { transform: translateX(3px); }
-      .list-item-title { font-size: 0.82rem; font-weight: 700; direction: ltr; text-align: left; word-break: break-all; margin-inline-end: 0.75rem; }
+
+      .list-item-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        unicode-bidi: plaintext;
+        text-align: start;
+        word-break: break-all;
+        margin-inline-end: 0.75rem;
+        min-width: 0;
+        flex: 1;
+      }
+      .list-item-title .list-item-text {
+        direction: ltr;
+        unicode-bidi: embed;
+        display: inline-block;
+      }
+
       .list-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
       .mini-btn {
         width: 2.1rem; height: 2.1rem;
@@ -498,7 +522,7 @@
       }
       .modal.show { display: flex; }
       .modal-content { background: var(--bg-base); border: 1px solid var(--gold-border); border-radius: var(--radius-lg); padding: 1.5rem; width: 100%; max-width: 320px; text-align: center; }
-      .qr-wrapper { background: #fff; padding: 0.85rem; border-radius: var(--radius-sm); margin: 1rem 0; display: flex; justify-content: center; }
+      .qr-wrapper { background: #fff; padding: 0.85rem; border-radius: var(--radius-sm); margin: 1rem 0; display: flex; justify-content: center; min-height: 216px; align-items: center; }
       .qr-link-box { background: rgba(0, 0, 0, 0.05); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.5rem; font-size: 0.7rem; color: var(--text-secondary); word-break: break-all; max-height: 70px; overflow-y: auto; text-align: left; }
 
       .pwa-banner {
@@ -547,19 +571,19 @@
     </div>
 
     <div class="app-container">
-      
+
       <header class="header">
         <div class="header-info">
-          <span class="header-title" id="panelTitle">✨ اشتراک شما</span>
+          <span class="header-title" id="panelTitle">اشتراک شما</span>
           <span class="header-email" id="userEmailText"></span>
         </div>
 
         <div class="header-actions">
-          <button id="themeToggleBtn" class="icon-action-btn" aria-label="Toggle Theme" title="Theme">
+          <button id="themeToggleBtn" class="icon-action-btn" aria-label="Toggle Theme">
             <i class="fa-solid fa-moon"></i>
           </button>
 
-          <button id="reloadBtn" class="icon-action-btn" aria-label="Reload" title="Reload">
+          <button id="reloadBtn" class="icon-action-btn" aria-label="Reload">
             <i class="fa-solid fa-rotate-right"></i>
           </button>
 
@@ -569,7 +593,7 @@
               <span id="currentLangLabel">فارسی</span>
               <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem; opacity: 0.7;"></i>
             </button>
-            
+
             <div id="langMenu" class="lang-menu" role="menu">
               <div class="lang-item" data-lang="fa" role="menuitem">🇮🇷 فارسی</div>
               <div class="lang-item" data-lang="en" role="menuitem">🇬🇧 English</div>
@@ -736,6 +760,13 @@
       const BYTES_IN_KB = 1024;
       const BYTES_IN_MB = 1024 ** 2;
       const BYTES_IN_GB = 1024 ** 3;
+      const CACHE_NAME = "sub-panel-v1";
+
+      function escapeHtml(str) {
+        return String(str ?? "").replace(/[&<>"']/g, c => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        }[c]));
+      }
 
       function normalizeDigits(str) {
         if (typeof str !== "string") return str;
@@ -743,8 +774,14 @@
       }
 
       function isPlaceholder(v) { return typeof v === "string" && v.includes("{{") && v.includes("}}"); }
-      function normalize(v, fb) { let t = String(v ?? "").trim(); return (!t || isPlaceholder(t)) ? fb : t; }
-      
+
+      function normalize(v, fb) {
+        if (v === null || v === undefined) return fb;
+        if (typeof v === "boolean") return v ? String(v) : fb;
+        let t = String(v).trim();
+        return (!t || isPlaceholder(t)) ? fb : t;
+      }
+
       function toNumber(v) {
         let val = normalize(v, "");
         if (!val) return null;
@@ -762,17 +799,20 @@
       }
 
       function parseEmails(raw) {
+        if (Array.isArray(raw)) return [...new Set(raw.filter(Boolean))];
         let txt = normalize(raw, "");
         if (!txt) return [];
         return [...new Set(txt.split(/[,\s]+/).filter(Boolean))];
       }
 
       function parseLinks(raw) {
+        if (Array.isArray(raw)) return raw.filter(l => l && String(l).trim());
         let txt = normalize(raw, "");
         return txt ? txt.split(/\r?\n/).filter(l => l.trim()) : [];
       }
 
       function decodeBase64Utf8(str) {
+        if (typeof str !== "string" || !str) return null;
         try {
           let clean = str.replace(/-/g, "+").replace(/_/g, "/");
           while (clean.length % 4) clean += "=";
@@ -821,56 +861,71 @@
           flag: "🇮🇷", name: "فارسی", used: "مصرف شده", usage: "مصرف", total: "حجم کل", remained: "باقی مانده",
           days: "روز", hours: "ساعت", minutes: "دقیقه",
           copy: "کپی لینک اشتراک", qr: "QR کد اشتراک", active: "فعال", inactive: "غیرفعال",
-          copyDone: "کپی شد! 🎉", copyFail: "خطا ❌", download: "دانلود شده", upload: "آپلود شده",
-          configTitle: "کانفیگ‌ها", noConfig: "کانفیگی موجود نیست", notFound: "موردی یافت نشد",
-          timeExpired: "منقضی شده ⚠️", timeUnlimited: "نامحدود ♾️", remainTime: "زمان باقیمانده",
-          subscriptionHub: "اشتراک شما ✨", copyAll: "کپی همه", searchPlaceholder: "جستجوی کانفیگ...",
-          reloaded: "به‌روزرسانی شد 🔄", bytesUnit: "بایت", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
-          pwaTitle: "نصب اپلیکیشن", pwaDesc: "دسترسی سریع‌تر بدون نیاز به مرورگر", pwaBtn: "نصب"
+          copyDone: "کپی شد", copyFail: "خطا", download: "دانلود شده", upload: "آپلود شده",
+          configTitle: "کانفیگ", noConfig: "کانفیگی موجود نیست", notFound: "موردی یافت نشد",
+          timeExpired: "منقضی شده", timeUnlimited: "نامحدود", remainTime: "زمان باقیمانده",
+          subscriptionHub: "اشتراک شما", copyAll: "کپی همه", searchPlaceholder: "جستجوی کانفیگ...",
+          reloaded: "به‌روزرسانی شد", bytesUnit: "بایت", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
+          pwaTitle: "نصب اپلیکیشن", pwaDesc: "دسترسی سریع‌تر بدون نیاز به مرورگر", pwaBtn: "نصب",
+          qrLibMissing: "کتابخانه QR بارگذاری نشد",
+          checkingUpdate: "بررسی به‌روزرسانی...", updateFound: "نسخه جدید پیدا شد، در حال نصب...",
+          updateNone: "برنامه به‌روز است", updatingApp: "به‌روزرسانی برنامه..."
         },
         en: {
           flag: "🇬🇧", name: "English", used: "Used", usage: "Usage", total: "Total", remained: "Remaining",
           days: "Days", hours: "Hrs", minutes: "Mins",
           copy: "Copy Sublink", qr: "Sublink QR", active: "Active", inactive: "Inactive",
-          copyDone: "Copied! 🎉", copyFail: "Failed ❌", download: "Downloaded", upload: "Uploaded",
-          configTitle: "Configs", noConfig: "No configs available", notFound: "No matching configs",
-          timeExpired: "Expired ⚠️", timeUnlimited: "Unlimited ♾️", remainTime: "Remaining time",
-          subscriptionHub: "Your Subscription ✨", copyAll: "Copy All", searchPlaceholder: "Search configs...",
-          reloaded: "Updated 🔄", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
-          pwaTitle: "Install App", pwaDesc: "Fast access right from your home screen", pwaBtn: "Install"
+          copyDone: "Copied", copyFail: "Failed", download: "Downloaded", upload: "Uploaded",
+          configTitle: "Config", noConfig: "No configs available", notFound: "No matching configs",
+          timeExpired: "Expired", timeUnlimited: "Unlimited", remainTime: "Remaining time",
+          subscriptionHub: "Your Subscription", copyAll: "Copy All", searchPlaceholder: "Search configs...",
+          reloaded: "Updated", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
+          pwaTitle: "Install App", pwaDesc: "Fast access right from your home screen", pwaBtn: "Install",
+          qrLibMissing: "QR library not loaded",
+          checkingUpdate: "Checking for updates...", updateFound: "New version found, installing...",
+          updateNone: "App is up-to-date", updatingApp: "Updating app..."
         },
         zh: {
           flag: "🇨🇳", name: "中文", used: "已用流量", usage: "用量", total: "总流量", remained: "剩余流量",
           days: "天", hours: "小时", minutes: "分钟",
           copy: "复制订阅链接", qr: "二维码", active: "已激活", inactive: "已失效",
-          copyDone: "已复制! 🎉", copyFail: "失败 ❌", download: "已下载", upload: "已上传",
-          configTitle: "节点列表", noConfig: "暂无可用节点", notFound: "未找到匹配节点",
-          timeExpired: "已过期 ⚠️", timeUnlimited: "无限流量 ♾️", remainTime: "剩余时间",
-          subscriptionHub: "您的订阅 ✨", copyAll: "复制全部", searchPlaceholder: "搜索节点...",
-          reloaded: "已更新 🔄", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
-          pwaTitle: "安装应用", pwaDesc: "添加至主屏幕以便快速访问", pwaBtn: "安装"
+          copyDone: "已复制", copyFail: "失败", download: "已下载", upload: "已上传",
+          configTitle: "节点", noConfig: "暂无可用节点", notFound: "未找到匹配节点",
+          timeExpired: "已过期", timeUnlimited: "无限流量", remainTime: "剩余时间",
+          subscriptionHub: "您的订阅", copyAll: "复制全部", searchPlaceholder: "搜索节点...",
+          reloaded: "已更新", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
+          pwaTitle: "安装应用", pwaDesc: "添加至主屏幕以便快速访问", pwaBtn: "安装",
+          qrLibMissing: "二维码库未加载",
+          checkingUpdate: "正在检查更新...", updateFound: "发现新版本，正在安装...",
+          updateNone: "应用已是最新", updatingApp: "正在更新应用..."
         },
         ru: {
           flag: "🇷🇺", name: "Русский", used: "Расход", usage: "Использовано", total: "Всего", remained: "Осталось",
           days: "Дней", hours: "Часов", minutes: "Мин",
           copy: "Скопировать", qr: "QR-код", active: "Активен", inactive: "Неактивен",
-          copyDone: "Скопировано! 🎉", copyFail: "Ошибка ❌", download: "Скачано", upload: "Загружено",
-          configTitle: "Конфигурации", noConfig: "Нет конфигураций", notFound: "Не найдено",
-          timeExpired: "Истёк ⚠️", timeUnlimited: "Безлимит ♾️", remainTime: "Осталось времени",
-          subscriptionHub: "Ваша Подписка ✨", copyAll: "Скопировать всё", searchPlaceholder: "Поиск...",
-          reloaded: "Обновлено 🔄", bytesUnit: "Б", kbUnit: "КБ", mbUnit: "МБ", volumeUnit: "ГБ",
-          pwaTitle: "Установить", pwaDesc: "Быстрый доступ с главного экрана", pwaBtn: "Скачать"
+          copyDone: "Скопировано", copyFail: "Ошибка", download: "Скачано", upload: "Загружено",
+          configTitle: "Конфиг", noConfig: "Нет конфигураций", notFound: "Не найдено",
+          timeExpired: "Истёк", timeUnlimited: "Безлимит", remainTime: "Осталось времени",
+          subscriptionHub: "Ваша Подписка", copyAll: "Скопировать всё", searchPlaceholder: "Поиск...",
+          reloaded: "Обновлено", bytesUnit: "Б", kbUnit: "КБ", mbUnit: "МБ", volumeUnit: "ГБ",
+          pwaTitle: "Установить", pwaDesc: "Быстрый доступ с главного экрана", pwaBtn: "Скачать",
+          qrLibMissing: "QR-библиотека не загружена",
+          checkingUpdate: "Проверка обновлений...", updateFound: "Найдена новая версия, установка...",
+          updateNone: "Приложение обновлено", updatingApp: "Обновление приложения..."
         },
         tr: {
           flag: "🇹🇷", name: "Türkçe", used: "Kullanılan", usage: "Kullanım", total: "Toplam", remained: "Kalan",
           days: "Gün", hours: "Saat", minutes: "Dakika",
           copy: "Aboneliği Kopyala", qr: "QR Kodu", active: "Aktif", inactive: "Pasif",
-          copyDone: "Kopyalandı! 🎉", copyFail: "Hata ❌", download: "İndirilen", upload: "Yüklenen",
-          configTitle: "Konfigürasyonlar", noConfig: "Konfigürasyon yok", notFound: "Sonuç bulunamadı",
-          timeExpired: "Süresi Doldu ⚠️", timeUnlimited: "Sınırsız ♾️", remainTime: "Kalan Süre",
-          subscriptionHub: "Aboneliğiniz ✨", copyAll: "Tümünü Kopyala", searchPlaceholder: "Ara...",
-          reloaded: "Güncellendi 🔄", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
-          pwaTitle: "Uygulamayı Yükle", pwaDesc: "Ana ekranınızdan hızlı erişim sağlayın", pwaBtn: "Yükle"
+          copyDone: "Kopyalandı", copyFail: "Hata", download: "İndirilen", upload: "Yüklenen",
+          configTitle: "Konfig", noConfig: "Konfigürasyon yok", notFound: "Sonuç bulunamadı",
+          timeExpired: "Süresi Doldu", timeUnlimited: "Sınırsız", remainTime: "Kalan Süre",
+          subscriptionHub: "Aboneliğiniz", copyAll: "Tümünü Kopyala", searchPlaceholder: "Ara...",
+          reloaded: "Güncellendi", bytesUnit: "B", kbUnit: "KB", mbUnit: "MB", volumeUnit: "GB",
+          pwaTitle: "Uygulamayı Yükle", pwaDesc: "Ana ekranınızdan hızlı erişim sağlayın", pwaBtn: "Yükle",
+          qrLibMissing: "QR kütüphanesi yüklenmedi",
+          checkingUpdate: "Güncellemeler kontrol ediliyor...", updateFound: "Yeni sürüm bulundu, yükleniyor...",
+          updateNone: "Uygulama güncel", updatingApp: "Uygulama güncelleniyor..."
         }
       };
 
@@ -879,8 +934,9 @@
       let configSearchTerm = "";
       let activeProtocol = "all";
       let deferredPrompt = null;
+      let swRegistration = null;
 
-      function t(key) { return locales[currentLang][key] || key; }
+      function t(key) { return (locales[currentLang] && locales[currentLang][key]) || key; }
       function toFaDigits(v) { return String(v ?? "").replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]); }
       function formatDisplay(v) { return currentLang === "fa" ? toFaDigits(v) : String(v ?? ""); }
 
@@ -895,6 +951,7 @@
       function formatBytesParts(bytes) {
         const n = Number(bytes);
         const safeBytes = Number.isFinite(n) && n > 0 ? n : 0;
+        if (safeBytes === 0) return { value: formatFixed(0), unit: t("volumeUnit") };
         if (safeBytes < BYTES_IN_KB) return { value: formatFixed(safeBytes), unit: t("bytesUnit") };
         if (safeBytes < BYTES_IN_MB) return { value: formatFixed(safeBytes / BYTES_IN_KB), unit: t("kbUnit") };
         if (safeBytes < BYTES_IN_GB) return { value: formatFixed(safeBytes / BYTES_IN_MB), unit: t("mbUnit") };
@@ -932,27 +989,32 @@
         return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}`;
       }
 
+      let toastTimer = null;
       function showToast(msg) {
         let toast = document.getElementById("toastMessage");
-        toast.innerText = msg; toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2000);
+        toast.innerText = msg;
+        toast.classList.add("show");
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2000);
       }
 
       function showQR(data, title) {
         if (!data) return showToast(t("copyFail"));
+        if (typeof QRCode === "undefined") return showToast(t("qrLibMissing"));
         document.getElementById("modalQrTitle").innerText = title || t("qr");
         document.getElementById("qrLinkText").textContent = data;
         const qrContainer = document.getElementById("qrcodeCanvas");
         qrContainer.innerHTML = "";
-        new QRCode(qrContainer, { text: data, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff" });
-        document.getElementById("qrModal").classList.add("show");
+        try {
+          new QRCode(qrContainer, { text: data, width: 200, height: 200, colorDark: "#000000", colorLight: "#ffffff" });
+          document.getElementById("qrModal").classList.add("show");
+        } catch (e) { showToast(t("copyFail")); }
       }
 
       function closeModal() { document.getElementById("qrModal").classList.remove("show"); }
 
       async function copyText(text, btnElement = null) {
         if (!text) return showToast(t("copyFail"));
-        
         if (btnElement && btnElement.id === "copyMainBtn") {
           const origText = document.getElementById("copyMainText").innerText;
           btnElement.classList.add("copied");
@@ -962,51 +1024,43 @@
             document.getElementById("copyMainText").innerText = origText;
           }, 1800);
         }
-
         try {
           if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(text);
           } else {
-            throw new Error('Fallback required');
+            throw new Error("Fallback required");
           }
           showToast(t("copyDone"));
         } catch (e) {
-          const ta = document.createElement("textarea"); ta.value = text;
-          ta.style.position = "fixed"; ta.style.left = "-9999px";
-          document.body.appendChild(ta); ta.select();
-          try { document.execCommand('copy'); showToast(t("copyDone")); } catch (err) { showToast(t("copyFail")); }
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand("copy"); showToast(t("copyDone")); }
+          catch (err) { showToast(t("copyFail")); }
           document.body.removeChild(ta);
         }
       }
 
       function setProgressRing(percent) {
-        const circle = document.getElementById('usageRing');
+        const circle = document.getElementById("usageRing");
         if (!circle) return;
         const circumference = 2 * Math.PI * 42;
         circle.style.strokeDasharray = `${circumference}`;
         circle.style.strokeDashoffset = circumference - (percent / 100) * circumference;
-
         let colorVal, glowVal;
-
-        if (percent >= 85) {
-          colorVal = "var(--danger)";
-          glowVal = "rgba(239, 68, 68, 0.45)";
-        } else if (percent >= 60) {
-          colorVal = "var(--warning)";
-          glowVal = "rgba(245, 158, 11, 0.45)";
-        } else {
-          colorVal = "var(--success)";
-          glowVal = "rgba(16, 185, 129, 0.45)";
-        }
-
-        document.documentElement.style.setProperty('--gauge-color', colorVal);
-        document.documentElement.style.setProperty('--gauge-glow', glowVal);
+        if (percent >= 85) { colorVal = "var(--danger)"; glowVal = "rgba(239, 68, 68, 0.45)"; }
+        else if (percent >= 60) { colorVal = "var(--warning)"; glowVal = "rgba(245, 158, 11, 0.45)"; }
+        else { colorVal = "var(--success)"; glowVal = "rgba(16, 185, 129, 0.45)"; }
+        document.documentElement.style.setProperty("--gauge-color", colorVal);
+        document.documentElement.style.setProperty("--gauge-glow", glowVal);
       }
 
       function renderStatsAndRing() {
         let unlimited = isDataUnlimited || totalGB <= 0;
         let usedPercent = !unlimited && totalGB > 0 ? Math.min(100, Math.max(0, (usedGB / totalGB) * 100)) : 0;
-        
         setVolumeStat("usedStatValue", "usedUnit", usedBytes);
         if (unlimited) {
           document.getElementById("totalStatValue").innerHTML = "∞";
@@ -1017,14 +1071,12 @@
           setVolumeStat("totalStatValue", "totalUnit", totalByteNum || 0);
           setVolumeStat("remainedStatValue", "remainedUnit", Math.max(0, totalByteNum - usedBytes));
         }
-
         document.getElementById("ringPercentText").innerHTML = unlimited ? "∞" : formatDisplay(Math.floor(usedPercent)) + "%";
         setProgressRing(unlimited ? 0 : usedPercent);
-
         setVolumeStat("downloadVal", "downloadUnit", downloadByteNum || 0);
         setVolumeStat("uploadVal", "uploadUnit", uploadByteNum || 0);
 
-        let isActive = isEnabled && (!expireISO || new Date(expireISO) > new Date()) && !( !unlimited && usedGB >= totalGB );
+        let isActive = isEnabled && (!expireISO || new Date(expireISO) > new Date()) && !(!unlimited && usedGB >= totalGB);
         document.getElementById("statusIcon").className = isActive ? "fa-solid fa-circle-check" : "fa-solid fa-circle-xmark";
         document.getElementById("statusText").innerText = isActive ? t("active") : t("inactive");
         document.getElementById("statusChip").className = isActive ? "status-badge" : "status-badge inactive";
@@ -1059,50 +1111,78 @@
         const clashSub = normalize(templateVars.subClashUrl, "");
 
         if (jsonSub && activeProtocol === "all" && (!configSearchTerm || "json".includes(configSearchTerm.toLowerCase()))) {
-          appendConfigItem(container, "JSON Sub", jsonSub, "fa-solid fa-code"); renderedCount++;
+          appendConfigItem(container, "JSON Sub", jsonSub, "fa-solid fa-code");
+          renderedCount++;
         }
         if (clashSub && activeProtocol === "all" && (!configSearchTerm || "clash".includes(configSearchTerm.toLowerCase()))) {
-          appendConfigItem(container, "Clash Sub", clashSub, "fa-solid fa-cat"); renderedCount++;
+          appendConfigItem(container, "Clash Sub", clashSub, "fa-solid fa-cat");
+          renderedCount++;
         }
 
         configsList.forEach((cfg, idx) => {
           const lowerCfg = cfg.toLowerCase().trim();
-          
           if (activeProtocol !== "all") {
             if (activeProtocol === "vless" && !lowerCfg.startsWith("vless://")) return;
             if (activeProtocol === "vmess" && !lowerCfg.startsWith("vmess://")) return;
             if (activeProtocol === "trojan" && !lowerCfg.startsWith("trojan://")) return;
             if (activeProtocol === "ss" && !lowerCfg.startsWith("ss://")) return;
           }
-
           const name = parseConfigName(cfg, t("configTitle") + " " + formatDisplay(idx + 1));
           if (!configSearchTerm || name.toLowerCase().includes(configSearchTerm.toLowerCase()) || lowerCfg.includes(configSearchTerm.toLowerCase())) {
-            appendConfigItem(container, name, cfg); renderedCount++;
+            appendConfigItem(container, name, cfg);
+            renderedCount++;
           }
         });
 
         if (searchBox) searchBox.style.display = configsList.length > 3 ? "block" : "none";
 
         if (renderedCount === 0) {
-          container.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-secondary); font-size:0.8rem;">${configSearchTerm ? t("notFound") : t("noConfig")}</div>`;
+          const empty = document.createElement("div");
+          empty.style.cssText = "text-align:center; padding:2rem; color:var(--text-secondary); font-size:0.8rem;";
+          empty.textContent = configSearchTerm ? t("notFound") : t("noConfig");
+          container.appendChild(empty);
         }
       }
 
       function appendConfigItem(container, name, url, icon) {
         const item = document.createElement("div");
         item.className = "list-item";
-        item.innerHTML = `
-          <div class="list-item-title">
-            ${icon ? `<i class="${icon}" style="margin-inline-end:0.4rem; color:var(--gold-light)"></i>` : '🚀 '}
-            <span>${name}</span>
-          </div>
-          <div class="list-actions">
-            <button class="mini-btn copy-btn" aria-label="Copy Config"><i class="fa-regular fa-copy"></i></button>
-            <button class="mini-btn qr-btn" aria-label="QR Code"><i class="fa-solid fa-qrcode"></i></button>
-          </div>
-        `;
-        item.querySelector(".copy-btn").onclick = () => copyText(url);
-        item.querySelector(".qr-btn").onclick = () => showQR(url, name);
+
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "list-item-title";
+
+        const iconEl = document.createElement("i");
+        iconEl.className = icon || "fa-solid fa-rocket";
+        iconEl.style.marginInlineEnd = "0.4rem";
+        iconEl.style.color = "var(--gold-light)";
+        titleDiv.appendChild(iconEl);
+
+        const textSpan = document.createElement("span");
+        textSpan.className = "list-item-text";
+        textSpan.textContent = name;
+        titleDiv.appendChild(textSpan);
+
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "list-actions";
+
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "mini-btn copy-btn";
+        copyBtn.setAttribute("aria-label", "Copy");
+        copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+
+        const qrBtn = document.createElement("button");
+        qrBtn.className = "mini-btn qr-btn";
+        qrBtn.setAttribute("aria-label", "QR");
+        qrBtn.innerHTML = '<i class="fa-solid fa-qrcode"></i>';
+
+        actionsDiv.appendChild(copyBtn);
+        actionsDiv.appendChild(qrBtn);
+        item.appendChild(titleDiv);
+        item.appendChild(actionsDiv);
+
+        copyBtn.onclick = (e) => { e.stopPropagation(); copyText(url); };
+        qrBtn.onclick = (e) => { e.stopPropagation(); showQR(url, name); };
+
         container.appendChild(item);
       }
 
@@ -1110,14 +1190,11 @@
         document.documentElement.lang = currentLang;
         document.documentElement.dir = currentLang === "fa" ? "rtl" : "ltr";
         document.documentElement.setAttribute("data-theme", currentTheme);
-        
         localStorage.setItem("nexus_gold_lang", currentLang);
         localStorage.setItem("nexus_gold_theme", currentTheme);
 
         const themeBtnIcon = document.querySelector("#themeToggleBtn i");
-        if (themeBtnIcon) {
-          themeBtnIcon.className = currentTheme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
-        }
+        if (themeBtnIcon) themeBtnIcon.className = currentTheme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
 
         document.getElementById("panelTitle").textContent = normalize(templateVars.subTitle, "") || t("subscriptionHub");
         document.getElementById("userEmailText").textContent = emailsList.length > 0 ? emailsList[0] : "";
@@ -1151,10 +1228,19 @@
         document.getElementById("minutesLabel").innerText = t("minutes");
         document.getElementById("expiryTextLabel").innerText = t("remainTime");
         document.getElementById("configSearchInput").placeholder = t("searchPlaceholder");
-
         document.getElementById("pwaTitle").innerText = t("pwaTitle");
         document.getElementById("pwaDesc").innerText = t("pwaDesc");
         document.getElementById("pwaBtnText").innerText = t("pwaBtn");
+
+        const copyBtn = document.getElementById("copyMainBtn");
+        const qrBtn = document.getElementById("qrMainBtn");
+        if (!subLink) {
+          copyBtn.setAttribute("disabled", "disabled");
+          qrBtn.setAttribute("disabled", "disabled");
+        } else {
+          copyBtn.removeAttribute("disabled");
+          qrBtn.removeAttribute("disabled");
+        }
 
         renderStatsAndRing();
         updateCountdownTick();
@@ -1168,12 +1254,13 @@
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
 
-        window.addEventListener('resize', () => {
+        window.addEventListener("resize", () => {
           width = canvas.width = window.innerWidth;
           height = canvas.height = window.innerHeight;
         });
 
-        const particles = Array.from({ length: 30 }, () => ({
+        const particleCount = Math.min(30, Math.max(10, Math.floor((width * height) / 40000)));
+        const particles = Array.from({ length: particleCount }, () => ({
           x: Math.random() * width,
           y: Math.random() * height,
           size: Math.random() * 2 + 0.8,
@@ -1185,25 +1272,153 @@
           if (document.hidden) return;
           ctx.clearRect(0, 0, width, height);
           ctx.fillStyle = currentTheme === "dark" ? "rgba(245, 158, 11, 0.8)" : "rgba(217, 119, 6, 0.6)";
-          
           particles.forEach(p => {
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.globalAlpha = p.opacity;
             ctx.fill();
-
             p.y -= p.speedY;
-            if (p.y < 0) {
-              p.y = height;
-              p.x = Math.random() * width;
-            }
+            if (p.y < 0) { p.y = height; p.x = Math.random() * width; }
           });
           requestAnimationFrame(draw);
         }
         draw();
       }
 
-      window.addEventListener('beforeinstallprompt', (e) => {
+      function buildServiceWorker() {
+        const swCode = `
+          const CACHE_NAME = "${CACHE_NAME}";
+          const PRECACHE_URLS = ["./", "./sub.html", "./index.html"];
+
+          self.addEventListener("install", (event) => {
+            event.waitUntil(
+              caches.open(CACHE_NAME).then((cache) => {
+                return Promise.all(
+                  PRECACHE_URLS.map((url) => cache.add(url).catch(() => {}))
+                );
+              }).then(() => self.skipWaiting())
+            );
+          });
+
+          self.addEventListener("activate", (event) => {
+            event.waitUntil(
+              caches.keys().then((keys) =>
+                Promise.all(
+                  keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
+                )
+              ).then(() => self.clients.claim())
+            );
+          });
+
+          self.addEventListener("fetch", (event) => {
+            const req = event.request;
+            if (req.method !== "GET") return;
+            const url = new URL(req.url);
+            if (url.origin !== self.location.origin) return;
+
+            if (req.mode === "navigate" || req.destination === "document") {
+              event.respondWith(
+                fetch(req).then((res) => {
+                  const copy = res.clone();
+                  caches.open(CACHE_NAME).then((c) => c.put(req, copy)).catch(() => {});
+                  return res;
+                }).catch(() =>
+                  caches.match(req).then((cached) => cached || caches.match("./sub.html") || caches.match("./"))
+                )
+              );
+              return;
+            }
+
+            event.respondWith(
+              caches.match(req).then((cached) => {
+                if (cached) return cached;
+                return fetch(req).then((res) => {
+                  if (!res || res.status !== 200 || res.type !== "basic") return res;
+                  const copy = res.clone();
+                  caches.open(CACHE_NAME).then((c) => c.put(req, copy)).catch(() => {});
+                  return res;
+                }).catch(() => cached);
+              })
+            );
+          });
+
+          self.addEventListener("message", (event) => {
+            const data = event.data || {};
+            if (data.type === "SKIP_WAITING") self.skipWaiting();
+            if (data.type === "CLEAR_CACHE") {
+              event.waitUntil(
+                caches.keys().then((keys) =>
+                  Promise.all(keys.map((k) => caches.delete(k)))
+                )
+              );
+            }
+          });
+        `;
+        return swCode;
+      }
+
+      async function registerServiceWorker() {
+        if (!("serviceWorker" in navigator)) return null;
+        if (!window.isSecureContext) return null;
+        try {
+          const blob = new Blob([buildServiceWorker()], { type: "application/javascript" });
+          const swUrl = URL.createObjectURL(blob);
+          const reg = await navigator.serviceWorker.register(swUrl, { scope: "./" });
+          swRegistration = reg;
+          return reg;
+        } catch (err) {
+          console.warn("SW registration failed", err);
+          return null;
+        }
+      }
+
+      async function performRealUpdate() {
+        if (swRegistration) {
+          try {
+            await swRegistration.update();
+
+            if (swRegistration.waiting) {
+              return new Promise((resolve) => {
+                navigator.serviceWorker.addEventListener("controllerchange", () => {
+                  window.location.reload();
+                  resolve(true);
+                }, { once: true });
+                swRegistration.waiting.postMessage({ type: "SKIP_WAITING" });
+                showToast(t("updateFound"));
+              });
+            }
+
+            if (swRegistration.installing) {
+              showToast(t("updatingApp"));
+              swRegistration.installing.addEventListener("statechange", (e) => {
+                if (e.target.state === "installed" && navigator.serviceWorker.controller) {
+                  e.target.postMessage({ type: "SKIP_WAITING" });
+                }
+              });
+              return true;
+            }
+
+            if (navigator.serviceWorker.controller) {
+              navigator.serviceWorker.controller.postMessage({ type: "CLEAR_CACHE" });
+            }
+            showToast(t("updateNone"));
+            return false;
+          } catch (err) {
+            console.warn("SW update failed", err);
+          }
+        }
+
+        if ("caches" in window) {
+          try {
+            const keys = await caches.keys();
+            await Promise.all(keys.map(k => caches.delete(k)));
+          } catch (e) {}
+        }
+
+        return false;
+      }
+
+      window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         deferredPrompt = e;
         if (!localStorage.getItem("pwa_banner_dismissed")) {
@@ -1217,7 +1432,7 @@
         if (!deferredPrompt) return;
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
+        if (outcome === "accepted") {
           document.getElementById("pwaInstallBanner").classList.remove("show");
         }
         deferredPrompt = null;
@@ -1233,38 +1448,36 @@
         updateUI();
       });
 
-      document.addEventListener('click', function(e) {
-        const target = e.target.closest('.card, .btn-gold, .btn-glass, .lang-btn, .mini-btn');
+      document.addEventListener("click", function (e) {
+        const target = e.target.closest(".card, .btn-gold, .btn-glass, .lang-btn, .mini-btn");
         if (!target) return;
-
+        if (target.hasAttribute("disabled")) return;
         const rect = target.getBoundingClientRect();
-        const ripple = document.createElement('span');
-        ripple.className = 'ripple';
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
         const size = Math.max(rect.width, rect.height);
         ripple.style.width = ripple.style.height = `${size}px`;
-        ripple.style.left = `${e.clientX - rect.left - size/2}px`;
-        ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+        ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+        ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
         target.appendChild(ripple);
-
         setTimeout(() => ripple.remove(), 600);
       });
 
-      document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-          const rotateX = ((y - centerY) / centerY) * -4;
-          const rotateY = ((x - centerX) / centerX) * 4;
-          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        document.querySelectorAll(".card").forEach(card => {
+          card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -4;
+            const rotateY = ((x - centerX) / centerX) * 4;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+          });
+          card.addEventListener("mouseleave", () => { card.style.transform = ""; });
         });
-
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = '';
-        });
-      });
+      }
 
       const langSelectBtn = document.getElementById("langSelectBtn");
       const langMenu = document.getElementById("langMenu");
@@ -1282,9 +1495,7 @@
         });
       });
 
-      document.addEventListener("click", () => {
-        langMenu.classList.remove("show");
-      });
+      document.addEventListener("click", () => { langMenu.classList.remove("show"); });
 
       document.querySelectorAll(".proto-chip").forEach(chip => {
         chip.addEventListener("click", () => {
@@ -1295,13 +1506,23 @@
         });
       });
 
-      document.getElementById("reloadBtn").addEventListener("click", function() {
+      document.getElementById("reloadBtn").addEventListener("click", async function () {
         this.classList.add("spin");
+        showToast(t("checkingUpdate"));
+
+        try {
+          await performRealUpdate();
+        } catch (e) {
+          console.warn(e);
+        }
+
         setTimeout(() => {
           updateUI();
           this.classList.remove("spin");
-          showToast(t("reloaded"));
-        }, 500);
+          if (!swRegistration || !navigator.serviceWorker.controller) {
+            showToast(t("reloaded"));
+          }
+        }, 800);
       });
 
       document.getElementById("configSearchInput").addEventListener("input", e => {
@@ -1309,10 +1530,12 @@
         renderConfigs();
       });
 
-      document.getElementById("copyMainBtn").onclick = function() { copyText(subLink, this); };
+      document.getElementById("copyMainBtn").onclick = function () { copyText(subLink, this); };
       document.getElementById("qrMainBtn").onclick = () => showQR(subLink, t("qr"));
       document.getElementById("closeModalBtn").onclick = closeModal;
-      document.getElementById("qrModal").onclick = e => { if (e.target === document.getElementById("qrModal")) closeModal(); };
+      document.getElementById("qrModal").onclick = e => {
+        if (e.target === document.getElementById("qrModal")) closeModal();
+      };
       document.getElementById("copyAllConfigsBtn").onclick = () => {
         if (configsList.length === 0) return showToast(t("noConfig"));
         copyText(configsList.join("\n"));
@@ -1321,6 +1544,15 @@
       updateUI();
       initParticles();
       setInterval(updateCountdownTick, 1000);
+      registerServiceWorker();
+
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.addEventListener("message", (event) => {
+          if (event.data && event.data.type === "CACHE_CLEARED") {
+            console.log("Cache cleared");
+          }
+        });
+      }
     </script>
   </body>
 </html>
