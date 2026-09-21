@@ -36,11 +36,13 @@
 ## ✨ Özellikler
 
 ### 🎨 Açık ve Koyu Tema
+
 Kullanıcının tarayıcısında kaydedilen tercihle akıllı geçiş — bir sonraki ziyarette son tema otomatik olarak aktif olur.
 
 ---
 
 ### 🌐 Çok Dilli (5 Dil)
+
 Tam destek:
 
 | Dil | Bölge | Yön |
@@ -56,6 +58,7 @@ Sayfa yönü (RTL/LTR) otomatik olarak ayarlanır.
 ---
 
 ### 📊 Dinamik 3 Renkli Dairesel Gösterge
+
 Etkileşimli kullanım göstergesi ve renk belirteçleri:
 
 - 🟢 **Zümrüt Yeşili** — Düşük kullanım
@@ -65,6 +68,7 @@ Etkileşimli kullanım göstergesi ve renk belirteçleri:
 ---
 
 ### ⏳ Gerçek Zamanlı Geri Sayım
+
 Aboneliğin kalan süresini gösteren hassas geri sayım:
 
 - Kalan gün
@@ -74,7 +78,9 @@ Aboneliğin kalan süresini gösteren hassas geri sayım:
 ---
 
 ### 📱 PWA Desteği (Uygulama Olarak Yükle)
+
 "Ana Ekrana Ekle" desteği:
+
 - iOS (Safari)
 - Android (Chrome, Firefox)
 
@@ -83,6 +89,7 @@ Yüklendikten sonra yerel bir uygulama gibi çalışır — simge, açılış ek
 ---
 
 ### ⚡ Konfigürasyon Arama ve Filtreleme
+
 - 🔍 **Anlık arama kutusu** — yaz, sonuçları anında gör
 - 🏷 **Hızlı filtre etiketleri** ile protokoller:
   - VLESS
@@ -93,6 +100,7 @@ Yüklendikten sonra yerel bir uygulama gibi çalışır — simge, açılış ek
 ---
 
 ### 🚀 Ultra Hafif
+
 - Ağır framework yok
 - Saf CSS ve JS
 - 100 ms'nin altında yükleme
@@ -116,18 +124,16 @@ Betik otomatik olarak şu adımları gerçekleştirir:
 
 | Adım | Açıklama |
 |:---|:---|
-| 1 | Mevcut şablonu yedekler |
-| 2 | Yeni şablonu indirir |
+| 1 | Klasör yoksa oluşturur |
+| 2 | En son şablonu indirir |
 | 3 | Paneldeki `sub.html` dosyasını değiştirir |
-| 4 | 3X-UI servisini yeniden başlatır |
+| 4 | Doğru dosya izinlerini ayarlar |
 
-### Varsayılan Yol
+### Kurulum Yolu
 
-```
-/usr/local/x-ui/bin/sub.html
-```
+`/etc/x-ui/sub/sub.html`
 
-Panelin başka bir yolda kuruluysa betik otomatik olarak algılar.
+Betik otomatik olarak klasörü oluşturur, eski dosyayı siler ve yeni şablonla değiştirir.
 
 ---
 
@@ -141,22 +147,24 @@ Manuel kurulum tercih edersen:
 wget https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
 ```
 
-### 2. Mevcut dosyayı yedekle
+### 2. Klasör oluştur (yoksa)
 
 ```bash
-cp /usr/local/x-ui/bin/sub.html /usr/local/x-ui/bin/sub.html.bak
+sudo mkdir -p /etc/x-ui/sub
+sudo chmod 755 /etc/x-ui/sub
 ```
 
 ### 3. Değiştir
 
 ```bash
-cp sub.html /usr/local/x-ui/bin/sub.html
+sudo cp sub.html /etc/x-ui/sub/sub.html
+sudo chmod 644 /etc/x-ui/sub/sub.html
 ```
 
 ### 4. Yeniden başlat
 
 ```bash
-systemctl restart x-ui
+sudo systemctl restart x-ui
 ```
 
 ---
@@ -190,7 +198,7 @@ systemctl restart x-ui
 
 ```bash
 # Dosyanın kopyalandığını kontrol et
-ls -la /usr/local/x-ui/bin/sub.html
+ls -la /etc/x-ui/sub/sub.html
 
 # Servisi yeniden başlat
 systemctl restart x-ui
@@ -214,6 +222,16 @@ Ctrl + Shift + Delete
 ### ❌ Tema yenilemeden sonra sıfırlanıyor
 
 Tarayıcının LocalStorage kullanmasına izin ver. Gizli Sekme modunda tema kaydedilmez.
+
+### ❌ Kurulum betiği hata veriyor
+
+İndirme hatası alıyorsan önce sunucunun internet bağlantısını kontrol et:
+
+```bash
+curl -I https://raw.githubusercontent.com/acor1/3xui-Tamplate/main/sub.html
+```
+
+`HTTP/2 200` dönmeli.
 
 ---
 
